@@ -1,0 +1,31 @@
+说明：
+首先CSkin界面库是完全免费的，可以任意使用，并且代码中无任何限制，如果有其他问题或者想购买界面库源码的可以加我QQ:345015918。
+
+文件夹中的2.0和4.0指的是netframework版本。
+
+使用教程：
+1.工具箱右键-新建项-命名CSkin。
+
+2.将CSkin.dll拖到新建的工具箱栏里。
+
+3.控件添加完毕，控件拖拽到界面即可使用和引用。
+
+4.窗体美化需要继承CCSkinMain。
+ 如：
+ public partial class FrmMain : Form
+
+ 改成：
+ public partial class FrmMain : CCSkinMain
+
+ 并且引用命名空间：
+ using CCWin;
+
+5.窗体还可以继承以下等多种主题：
+Skin_Color，Skin_DevExpress，Skin_Mac，Skin_Metro，Skin_VS
+
+
+详细图解参考此帖：
+http://bbs.cskin.net/thread-803-1-1.html
+
+更多CSkin案例源码下载：
+http://bbs.cskin.net/thread-800-1-1.html
