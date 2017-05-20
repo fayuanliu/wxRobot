@@ -13,7 +13,10 @@ namespace wxRobot.Services
     {
         private static Dictionary<string, string> _syncKey = new Dictionary<string, string>();
         //微信初始化url
-        private static string _init_url = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=1377482058764";
+        private static string _init_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=1377482058764";
+
+        //发送消息url
+        private static string _sendmsg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
 
         /// <summary>
         /// 微信初始化
@@ -42,6 +45,46 @@ namespace wxRobot.Services
             else
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="msg">内容</param>
+        /// <param name="from">来</param>
+        /// <param name="to">到</param>
+        /// <param name="type">类型(文本为1)</param>
+        public void SendMessage(string msg, string from, string to, int type)
+        {
+            string msg_json = "{{" +
+           "\"BaseRequest\":{{" +
+               "\"DeviceID\" : \"e441551176\"," +
+               "\"Sid\" : \"{0}\"," +
+               "\"Skey\" : \"{6}\"," +
+               "\"Uin\" : \"{1}\"" +
+           "}}," +
+           "\"Msg\" : {{" +
+               "\"ClientMsgId\" : {8}," +
+               "\"Content\" : \"{2}\"," +
+               "\"FromUserName\" : \"{3}\"," +
+               "\"LocalID\" : {9}," +
+               "\"ToUserName\" : \"{4}\"," +
+               "\"Type\" : {5}" +
+           "}}," +
+           "\"rr\" : {7}" +
+           "}}";
+
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+
+            if (sid != null && uin != null)
+            {
+                msg_json = string.Format(msg_json, sid.Value, uin.Value, msg, from, to, type, LoginService.SKey, DateTime.Now.Millisecond, DateTime.Now.Millisecond, DateTime.Now.Millisecond);
+
+                byte[] bytes = HttpServer.SendPostRequest(_sendmsg_url + sid.Value + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
+
+                string send_result = Encoding.UTF8.GetString(bytes);
             }
         }
 

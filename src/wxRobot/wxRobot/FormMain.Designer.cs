@@ -51,15 +51,15 @@
             this.TxtContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
             this.skinPanel1 = new CCWin.SkinControl.SkinPanel();
+            this.lblArea = new CCWin.SkinControl.SkinLabel();
+            this.lblSignature = new CCWin.SkinControl.SkinLabel();
             this.picSexImage = new CCWin.SkinControl.SkinPictureBox();
             this.lblNick = new CCWin.SkinControl.SkinLabel();
             this.picImage = new CCWin.SkinControl.SkinPictureBox();
             this.skinTabPage3 = new CCWin.SkinControl.SkinTabPage();
+            this.wFriendsList1 = new wxRobot.Controls.WFriendsList();
             this.skinTabPage4 = new CCWin.SkinControl.SkinTabPage();
             this.picQRCode = new CCWin.SkinControl.SkinPictureBox();
-            this.lblSignature = new CCWin.SkinControl.SkinLabel();
-            this.lblArea = new CCWin.SkinControl.SkinLabel();
-            this.wFriendsList1 = new wxRobot.Controls.WFriendsList();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox1)).BeginInit();
             this.skinTabControl1.SuspendLayout();
@@ -200,7 +200,7 @@
             this.skinTabControl1.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageHover")));
             this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl1.PageNorml = null;
-            this.skinTabControl1.SelectedIndex = 1;
+            this.skinTabControl1.SelectedIndex = 0;
             this.skinTabControl1.Size = new System.Drawing.Size(517, 374);
             this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl1.TabIndex = 13;
@@ -262,6 +262,7 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.DataGridMessage.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.DataGridMessage.RowTemplate.Height = 23;
+            this.DataGridMessage.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DataGridMessage.Size = new System.Drawing.Size(511, 335);
             this.DataGridMessage.TabIndex = 2;
             this.DataGridMessage.TitleBack = null;
@@ -322,6 +323,30 @@
             this.skinPanel1.Size = new System.Drawing.Size(275, 324);
             this.skinPanel1.TabIndex = 0;
             // 
+            // lblArea
+            // 
+            this.lblArea.AutoSize = true;
+            this.lblArea.BackColor = System.Drawing.Color.Transparent;
+            this.lblArea.BorderColor = System.Drawing.Color.White;
+            this.lblArea.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblArea.Location = new System.Drawing.Point(30, 260);
+            this.lblArea.Name = "lblArea";
+            this.lblArea.Size = new System.Drawing.Size(138, 21);
+            this.lblArea.TabIndex = 4;
+            this.lblArea.Text = "地区：天津，中国";
+            // 
+            // lblSignature
+            // 
+            this.lblSignature.AutoSize = true;
+            this.lblSignature.BackColor = System.Drawing.Color.Transparent;
+            this.lblSignature.BorderColor = System.Drawing.Color.White;
+            this.lblSignature.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblSignature.Location = new System.Drawing.Point(30, 227);
+            this.lblSignature.Name = "lblSignature";
+            this.lblSignature.Size = new System.Drawing.Size(93, 20);
+            this.lblSignature.TabIndex = 3;
+            this.lblSignature.Text = "一花一世界。";
+            // 
             // picSexImage
             // 
             this.picSexImage.BackColor = System.Drawing.Color.Transparent;
@@ -367,6 +392,17 @@
             this.skinTabPage3.TabItemImage = null;
             this.skinTabPage3.Text = "好友列表";
             // 
+            // wFriendsList1
+            // 
+            this.wFriendsList1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wFriendsList1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.wFriendsList1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.wFriendsList1.FormattingEnabled = true;
+            this.wFriendsList1.Location = new System.Drawing.Point(3, 3);
+            this.wFriendsList1.Name = "wFriendsList1";
+            this.wFriendsList1.Size = new System.Drawing.Size(511, 330);
+            this.wFriendsList1.TabIndex = 0;
+            // 
             // skinTabPage4
             // 
             this.skinTabPage4.BackColor = System.Drawing.Color.White;
@@ -387,41 +423,6 @@
             this.picQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picQRCode.TabIndex = 9;
             this.picQRCode.TabStop = false;
-            // 
-            // lblSignature
-            // 
-            this.lblSignature.AutoSize = true;
-            this.lblSignature.BackColor = System.Drawing.Color.Transparent;
-            this.lblSignature.BorderColor = System.Drawing.Color.White;
-            this.lblSignature.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblSignature.Location = new System.Drawing.Point(30, 227);
-            this.lblSignature.Name = "lblSignature";
-            this.lblSignature.Size = new System.Drawing.Size(93, 20);
-            this.lblSignature.TabIndex = 3;
-            this.lblSignature.Text = "一花一世界。";
-            // 
-            // lblArea
-            // 
-            this.lblArea.AutoSize = true;
-            this.lblArea.BackColor = System.Drawing.Color.Transparent;
-            this.lblArea.BorderColor = System.Drawing.Color.White;
-            this.lblArea.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblArea.Location = new System.Drawing.Point(30, 260);
-            this.lblArea.Name = "lblArea";
-            this.lblArea.Size = new System.Drawing.Size(138, 21);
-            this.lblArea.TabIndex = 4;
-            this.lblArea.Text = "地区：天津，中国";
-            // 
-            // wFriendsList1
-            // 
-            this.wFriendsList1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wFriendsList1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.wFriendsList1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.wFriendsList1.FormattingEnabled = true;
-            this.wFriendsList1.Location = new System.Drawing.Point(3, 3);
-            this.wFriendsList1.Name = "wFriendsList1";
-            this.wFriendsList1.Size = new System.Drawing.Size(511, 330);
-            this.wFriendsList1.TabIndex = 0;
             // 
             // FormMain
             // 

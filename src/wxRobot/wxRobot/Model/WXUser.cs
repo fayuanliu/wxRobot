@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using wxRobot.Model.Dto;
 using wxRobot.Services;
 
 namespace wxRobot.Model
@@ -117,6 +118,16 @@ namespace wxRobot.Model
             {
                 return (RemarkName == null || RemarkName == "") ? NickName : RemarkName;
             }
+        }
+
+        /// <summary>
+        /// 向该用户发送消息
+        /// </summary>
+        /// <param name="msg"></param>
+        public void SendMsg(WXMesssage msg)
+        {
+            WXServices wxs = new WXServices();
+            wxs.SendMessage(msg.Msg, msg.From, msg.To, msg.Type);
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Text;
 using System.Windows.Forms;
 using wxRobot.Enums;
 using wxRobot.Model;
+using wxRobot.Model.Dto;
 using wxRobot.Services;
 
 namespace wxRobot
@@ -19,12 +20,13 @@ namespace wxRobot
     {
         private const String DEFAULT_TEXT = "请输入你要发送的信息";
 
-        private List<Object> _contact_all = new List<object>();
+        private static List<object> _contact_all = new List<object>();
+        private static List<WXUser> contact_all = new List<WXUser>();
 
         /// <summary>
         /// 当前登录微信用户
         /// </summary>
-        private WXUser _me;
+        private static WXUser _me;
 
         public FormMain()
         {
@@ -213,14 +215,17 @@ namespace wxRobot
                         }
                         if (login_result is string)  //已完成登录
                         {
-                            lblTip.Text = "登录成功！";
+                            this.BeginInvoke((Action)delegate ()
+                            {
+                                lblTip.Text = "登录成功！";
+                            });
+
                             //访问登录跳转URL
                             ls.GetSidUid(login_result as string);
                             //获取好友和并绑定
                             UserServices userServices = new UserServices();
                             WXServices wxServices = new WXServices();
                             JObject initResult = wxServices.WxInit();
-                            List<WXUser> contact_all = new List<WXUser>();
                             if (initResult != null)
                             {
                                 _me = new WXUser();
@@ -257,7 +262,8 @@ namespace wxRobot
                             }
                             IOrderedEnumerable<WXUser> list_all = contact_all.OrderBy(e => (e as WXUser).ShowPinYin);
 
-                            WXUser wx; string start_char;
+                            WXUser wx;
+                            string start_char;
                             foreach (object o in list_all)
                             {
                                 wx = o as WXUser;
@@ -269,14 +275,13 @@ namespace wxRobot
                                 _contact_all.Add(o);
                             }
                             //等待结束
-                            this.BeginInvoke((Action)(delegate ()  
+                            this.BeginInvoke((Action)(delegate ()
                             {
                                 //通讯录
                                 wFriendsList1.Items.AddRange(_contact_all.ToArray());
                                 BindOwer(_me);
-                                return;
                             }));
-
+                            return;
                         }
                     }
                 }
@@ -291,10 +296,50 @@ namespace wxRobot
             lblSignature.Text = me.Signature;
             picSexImage.Image = me.Sex == "1" ? Properties.Resources.male : Properties.Resources.female;
             picSexImage.Location = new Point(lblNick.Location.X + lblNick.Width + 4, picSexImage.Location.Y);
+            if (me.Icon == null)
+            {
+                picImage.Image = picQRCode.Image;
+            }
+            else
+            {
+                picImage.Image = me.Icon;
+            }
         }
 
         private void skinButton1_Click(object sender, EventArgs e)
         {
+            List<MessageType> message = new List<MessageType>();
+            int count = DataGridMessage.Rows.Count;
+            for (int i = 0; i < count; i++)
+            {
+                DataGridViewCheckBoxCell checkCell = (DataGridViewCheckBoxCell)DataGridMessage.Rows[i].Cells[0];
+                Boolean flag = Convert.ToBoolean(checkCell.Value);
+                if (flag == true)
+                {
+                    MessageType msgType = new MessageType()
+                    {
+                        SendType = this.DataGridMessage.Rows[i].Cells[1].Value.ToString(),
+                        TxtContent = this.DataGridMessage.Rows[i].Cells[2].Value.ToString()
+                    };
+                    message.Add(msgType);
+                }
+            }
+            WXMesssage msg = new WXMesssage();
+            var data = message.FirstOrDefault();
+            //发消息
+            foreach (var item in contact_all)
+            {
+                msg.From = _me.UserName;
+                msg.Msg = data.TxtContent;
+                msg.Readed = false;
+                msg.To = item.UserName;
+                msg.Type = 1;
+                msg.Time = DateTime.Now;
+                if (item.NickName!="胡永乐"&& item.NickName!="研发基地2")
+                {
+                item.SendMsg(msg);
+                }
+            }
 
         }
     }

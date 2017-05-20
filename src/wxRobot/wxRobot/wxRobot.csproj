@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Https\HttpServer.cs" />
     <Compile Include="Model\Dto\MessageType.cs" />
+    <Compile Include="Model\Dto\WXMesssage.cs" />
     <Compile Include="Model\Machine.cs" />
     <Compile Include="Model\OperLog.cs" />
     <Compile Include="Model\RobotContext.cs" />
