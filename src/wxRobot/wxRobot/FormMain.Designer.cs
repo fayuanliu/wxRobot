@@ -51,14 +51,14 @@
             this.TxtContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.skinTabPage2 = new CCWin.SkinControl.SkinTabPage();
             this.skinPanel1 = new CCWin.SkinControl.SkinPanel();
-            this.pboxsex = new CCWin.SkinControl.SkinPictureBox();
-            this.skinLabel6 = new CCWin.SkinControl.SkinLabel();
-            this.pboxHead = new CCWin.SkinControl.SkinPictureBox();
+            this.picSexImage = new CCWin.SkinControl.SkinPictureBox();
+            this.lblNick = new CCWin.SkinControl.SkinLabel();
+            this.picImage = new CCWin.SkinControl.SkinPictureBox();
             this.skinTabPage3 = new CCWin.SkinControl.SkinTabPage();
             this.skinTabPage4 = new CCWin.SkinControl.SkinTabPage();
             this.picQRCode = new CCWin.SkinControl.SkinPictureBox();
-            this.lblsiager = new CCWin.SkinControl.SkinLabel();
-            this.lblAddress = new CCWin.SkinControl.SkinLabel();
+            this.lblSignature = new CCWin.SkinControl.SkinLabel();
+            this.lblArea = new CCWin.SkinControl.SkinLabel();
             this.wFriendsList1 = new wxRobot.Controls.WFriendsList();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox1)).BeginInit();
@@ -67,8 +67,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.DataGridMessage)).BeginInit();
             this.skinTabPage2.SuspendLayout();
             this.skinPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pboxsex)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pboxHead)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picSexImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picImage)).BeginInit();
             this.skinTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.SuspendLayout();
@@ -200,7 +200,7 @@
             this.skinTabControl1.PageHover = ((System.Drawing.Image)(resources.GetObject("skinTabControl1.PageHover")));
             this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl1.PageNorml = null;
-            this.skinTabControl1.SelectedIndex = 0;
+            this.skinTabControl1.SelectedIndex = 1;
             this.skinTabControl1.Size = new System.Drawing.Size(517, 374);
             this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl1.TabIndex = 13;
@@ -308,11 +308,11 @@
             // skinPanel1
             // 
             this.skinPanel1.BackColor = System.Drawing.Color.Transparent;
-            this.skinPanel1.Controls.Add(this.lblAddress);
-            this.skinPanel1.Controls.Add(this.lblsiager);
-            this.skinPanel1.Controls.Add(this.pboxsex);
-            this.skinPanel1.Controls.Add(this.skinLabel6);
-            this.skinPanel1.Controls.Add(this.pboxHead);
+            this.skinPanel1.Controls.Add(this.lblArea);
+            this.skinPanel1.Controls.Add(this.lblSignature);
+            this.skinPanel1.Controls.Add(this.picSexImage);
+            this.skinPanel1.Controls.Add(this.lblNick);
+            this.skinPanel1.Controls.Add(this.picImage);
             this.skinPanel1.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinPanel1.DownBack = null;
             this.skinPanel1.Location = new System.Drawing.Point(128, 11);
@@ -322,38 +322,38 @@
             this.skinPanel1.Size = new System.Drawing.Size(275, 324);
             this.skinPanel1.TabIndex = 0;
             // 
-            // pboxsex
+            // picSexImage
             // 
-            this.pboxsex.BackColor = System.Drawing.Color.Transparent;
-            this.pboxsex.Image = global::wxRobot.Properties.Resources.female;
-            this.pboxsex.Location = new System.Drawing.Point(116, 185);
-            this.pboxsex.Name = "pboxsex";
-            this.pboxsex.Size = new System.Drawing.Size(24, 21);
-            this.pboxsex.TabIndex = 2;
-            this.pboxsex.TabStop = false;
+            this.picSexImage.BackColor = System.Drawing.Color.Transparent;
+            this.picSexImage.Image = global::wxRobot.Properties.Resources.female;
+            this.picSexImage.Location = new System.Drawing.Point(116, 185);
+            this.picSexImage.Name = "picSexImage";
+            this.picSexImage.Size = new System.Drawing.Size(24, 21);
+            this.picSexImage.TabIndex = 2;
+            this.picSexImage.TabStop = false;
             // 
-            // skinLabel6
+            // lblNick
             // 
-            this.skinLabel6.AutoSize = true;
-            this.skinLabel6.BackColor = System.Drawing.Color.Transparent;
-            this.skinLabel6.BorderColor = System.Drawing.Color.White;
-            this.skinLabel6.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel6.Location = new System.Drawing.Point(24, 179);
-            this.skinLabel6.Name = "skinLabel6";
-            this.skinLabel6.Size = new System.Drawing.Size(86, 31);
-            this.skinLabel6.TabIndex = 1;
-            this.skinLabel6.Text = "刘某某";
+            this.lblNick.AutoSize = true;
+            this.lblNick.BackColor = System.Drawing.Color.Transparent;
+            this.lblNick.BorderColor = System.Drawing.Color.White;
+            this.lblNick.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblNick.Location = new System.Drawing.Point(24, 179);
+            this.lblNick.Name = "lblNick";
+            this.lblNick.Size = new System.Drawing.Size(86, 31);
+            this.lblNick.TabIndex = 1;
+            this.lblNick.Text = "刘某某";
             // 
-            // pboxHead
+            // picImage
             // 
-            this.pboxHead.BackColor = System.Drawing.Color.Transparent;
-            this.pboxHead.Image = global::wxRobot.Properties.Resources._default;
-            this.pboxHead.Location = new System.Drawing.Point(44, 22);
-            this.pboxHead.Name = "pboxHead";
-            this.pboxHead.Size = new System.Drawing.Size(182, 137);
-            this.pboxHead.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pboxHead.TabIndex = 0;
-            this.pboxHead.TabStop = false;
+            this.picImage.BackColor = System.Drawing.Color.Transparent;
+            this.picImage.Image = global::wxRobot.Properties.Resources._default;
+            this.picImage.Location = new System.Drawing.Point(44, 22);
+            this.picImage.Name = "picImage";
+            this.picImage.Size = new System.Drawing.Size(182, 137);
+            this.picImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picImage.TabIndex = 0;
+            this.picImage.TabStop = false;
             // 
             // skinTabPage3
             // 
@@ -388,29 +388,29 @@
             this.picQRCode.TabIndex = 9;
             this.picQRCode.TabStop = false;
             // 
-            // lblsiager
+            // lblSignature
             // 
-            this.lblsiager.AutoSize = true;
-            this.lblsiager.BackColor = System.Drawing.Color.Transparent;
-            this.lblsiager.BorderColor = System.Drawing.Color.White;
-            this.lblsiager.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblsiager.Location = new System.Drawing.Point(30, 227);
-            this.lblsiager.Name = "lblsiager";
-            this.lblsiager.Size = new System.Drawing.Size(80, 20);
-            this.lblsiager.TabIndex = 3;
-            this.lblsiager.Text = "skinLabel7";
+            this.lblSignature.AutoSize = true;
+            this.lblSignature.BackColor = System.Drawing.Color.Transparent;
+            this.lblSignature.BorderColor = System.Drawing.Color.White;
+            this.lblSignature.Font = new System.Drawing.Font("微软雅黑", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblSignature.Location = new System.Drawing.Point(30, 227);
+            this.lblSignature.Name = "lblSignature";
+            this.lblSignature.Size = new System.Drawing.Size(93, 20);
+            this.lblSignature.TabIndex = 3;
+            this.lblSignature.Text = "一花一世界。";
             // 
-            // lblAddress
+            // lblArea
             // 
-            this.lblAddress.AutoSize = true;
-            this.lblAddress.BackColor = System.Drawing.Color.Transparent;
-            this.lblAddress.BorderColor = System.Drawing.Color.White;
-            this.lblAddress.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblAddress.Location = new System.Drawing.Point(30, 260);
-            this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(89, 21);
-            this.lblAddress.TabIndex = 4;
-            this.lblAddress.Text = "skinLabel8";
+            this.lblArea.AutoSize = true;
+            this.lblArea.BackColor = System.Drawing.Color.Transparent;
+            this.lblArea.BorderColor = System.Drawing.Color.White;
+            this.lblArea.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblArea.Location = new System.Drawing.Point(30, 260);
+            this.lblArea.Name = "lblArea";
+            this.lblArea.Size = new System.Drawing.Size(138, 21);
+            this.lblArea.TabIndex = 4;
+            this.lblArea.Text = "地区：天津，中国";
             // 
             // wFriendsList1
             // 
@@ -452,8 +452,8 @@
             this.skinTabPage2.ResumeLayout(false);
             this.skinPanel1.ResumeLayout(false);
             this.skinPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pboxsex)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pboxHead)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picSexImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picImage)).EndInit();
             this.skinTabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).EndInit();
             this.ResumeLayout(false);
@@ -483,11 +483,11 @@
         private CCWin.SkinControl.SkinButton skinButton1;
         private Controls.WFriendsList wFriendsList1;
         private CCWin.SkinControl.SkinPanel skinPanel1;
-        private CCWin.SkinControl.SkinPictureBox pboxHead;
-        private CCWin.SkinControl.SkinLabel skinLabel6;
-        private CCWin.SkinControl.SkinPictureBox pboxsex;
-        private CCWin.SkinControl.SkinLabel lblAddress;
-        private CCWin.SkinControl.SkinLabel lblsiager;
+        private CCWin.SkinControl.SkinPictureBox picImage;
+        private CCWin.SkinControl.SkinLabel lblNick;
+        private CCWin.SkinControl.SkinPictureBox picSexImage;
+        private CCWin.SkinControl.SkinLabel lblArea;
+        private CCWin.SkinControl.SkinLabel lblSignature;
     }
 }
 

@@ -84,6 +84,7 @@ namespace wxRobot
         {
             //this.TxtMessage.Text = DEFAULT_TEXT;
             //this.TxtMessage.ForeColor = Color.Gray;
+            skinTabControl1.TabPages[1].Select();
             GetLoginQRCode();
             BindMessageGrid();
         }
@@ -267,17 +268,29 @@ namespace wxRobot
                                 }
                                 _contact_all.Add(o);
                             }
-
-                            this.BeginInvoke((Action)(delegate ()  //等待结束
+                            //等待结束
+                            this.BeginInvoke((Action)(delegate ()  
                             {
-                                 wFriendsList1.Items.AddRange(_contact_all.ToArray());  //通讯录
-                                //wpersonalinfo.FriendUser = _me;
+                                //通讯录
+                                wFriendsList1.Items.AddRange(_contact_all.ToArray());
+                                BindOwer(_me);
+                                return;
                             }));
 
                         }
                     }
                 }
             })).BeginInvoke(null, null);
+        }
+
+        public void BindOwer(WXUser me)
+        {
+            picImage.Image = me.Icon;
+            lblNick.Text = me.NickName;
+            lblArea.Text = me.City + "，" + me.Province;
+            lblSignature.Text = me.Signature;
+            picSexImage.Image = me.Sex == "1" ? Properties.Resources.male : Properties.Resources.female;
+            picSexImage.Location = new Point(lblNick.Location.X + lblNick.Width + 4, picSexImage.Location.Y);
         }
 
         private void skinButton1_Click(object sender, EventArgs e)
