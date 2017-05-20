@@ -43,6 +43,10 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -65,6 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\WFriendsList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Enums\MessageTypeEnum.cs" />
     <Compile Include="Enums\ResultCodeEnums.cs" />
     <Compile Include="FormMain.cs">
@@ -73,17 +80,27 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Https\HttpServer.cs" />
+    <Compile Include="Model\Dto\MessageType.cs" />
     <Compile Include="Model\Machine.cs" />
     <Compile Include="Model\OperLog.cs" />
     <Compile Include="Model\RobotContext.cs" />
     <Compile Include="Model\ServiceRecord.cs" />
+    <Compile Include="Model\WXUser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\MachineSvc.cs" />
+    <Compile Include="Services\MessageServces.cs" />
     <Compile Include="Services\ServiceRecordSvc.cs" />
+    <Compile Include="Services\UserServices.cs" />
+    <Compile Include="Services\WXServices.cs" />
     <Compile Include="Utils\AESCrypt.cs" />
     <Compile Include="Utils\GetAESInfo.cs" />
     <Compile Include="Utils\OperResult.cs" />
+    <EmbeddedResource Include="Controls\WFriendsList.resx">
+      <DependentUpon>WFriendsList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -95,6 +112,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config" />
     <None Include="packages.config" />
@@ -109,9 +127,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Https\" />
-    <Folder Include="Resources\" />
+    <EmbeddedResource Include="Resources\female.png" />
+    <EmbeddedResource Include="Resources\male.png" />
+    <EmbeddedResource Include="Resources\右箭头.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\default.jpg" />
+    <Content Include="Resources\male.bmp" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.1\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.1\build\net40\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

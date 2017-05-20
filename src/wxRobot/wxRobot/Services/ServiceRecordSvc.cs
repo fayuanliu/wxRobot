@@ -55,8 +55,8 @@ namespace wxRobot.Services
             result.Code = ResultCodeEnums.warning;
             result.Msg = "授权未完成";
             MachineSvc svc = new MachineSvc();
-           var machine = svc.Get();
-            if (machine==null)
+            var machine = svc.Get();
+            if (machine == null)
             {
                 result.Code = ResultCodeEnums.Error;
                 result.Msg = "未能获取到机器码！";
@@ -70,7 +70,7 @@ namespace wxRobot.Services
             using (RobotContext db = new RobotContext())
             {
                 db.Record.Add(Record);
-               int res= db.SaveChanges();
+                int res = db.SaveChanges();
                 if (res > 0)
                 {
                     result.Code = ResultCodeEnums.success;
@@ -78,16 +78,28 @@ namespace wxRobot.Services
                     return result;
                 }
             }
-           return result;
+            return result;
         }
 
         /// <summary>
         /// 更新使用次数
         /// </summary>
         /// <returns></returns>
-        public OperResult SetRecord()
+        public void SetRecord()
         {
-            
+            MachineSvc svc = new MachineSvc();
+            var machine = svc.Get();
+            using (RobotContext db = new RobotContext())
+            {
+                var data = db.Record.FirstOrDefault();
+                int now = int.Parse(GetAESInfo.Get(data.SurplusTotal, machine.MachineCode));
+                now--;
+                data.SurplusTotal = GetAESInfo.Set(now.ToString(), machine.MachineCode);
+                data.LastOperTime = DateTime.Now;
+                db.SaveChanges();
+                //OperLog log = new OperLog();
+                //db.OperLog.Add()
+            }
         }
 
 
