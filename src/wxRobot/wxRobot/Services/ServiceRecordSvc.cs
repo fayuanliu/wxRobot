@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using wxRobot.Enums;
 using wxRobot.Model;
-using wxRobot.Utils;
+using wxRobot.Util.Enums;
+using wxRobot.Util.Utils;
 
 namespace wxRobot.Services
 {
@@ -49,19 +49,26 @@ namespace wxRobot.Services
         /// 授权应用
         /// </summary>
         /// <returns></returns>
-        public OperResult Auth(string authCode)
+        public OperResult Auth(string authCode,string mcCode)
         {
             OperResult result = new OperResult();
             result.Code = ResultCodeEnums.warning;
             result.Msg = "授权未完成";
             MachineSvc svc = new MachineSvc();
-            var machine = svc.Get();
-            if (machine == null)
+            svc.Add(mcCode);
+            if (string.IsNullOrEmpty(mcCode))
             {
                 result.Code = ResultCodeEnums.Error;
                 result.Msg = "未能获取到机器码！";
                 return result;
             }
+            int count = 0;
+            if (int.TryParse(GetAESInfo.Get(authCode,mcCode),out count))
+            {
+                result.Code = ResultCodeEnums.warning;
+                result.Msg = "授权码出错，请确认授权码！";
+                return result;
+            }                    
             ServiceRecord Record = new ServiceRecord();
             Record.IsAuth = true;
             Record.LastOperTime = DateTime.Now;

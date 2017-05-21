@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using wxRobot.Enums;
+using wxRobot.Util.Enums;
 using wxRobot.Model;
 using wxRobot.Model.Dto;
 using wxRobot.Services;
@@ -35,60 +35,44 @@ namespace wxRobot
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //LoadMessageTypeCombo(this.cbxMsgType);
-            //SetSendContent();
             WindowInit();
         }
 
-        private void cbxMsgType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // SetSendContent();
-        }
-
-        public void LoadMessageTypeCombo(ComboBox cbo)
-        {
-            cbo.DataSource = Enum.GetValues(typeof(MessageTypeEnum))
-            .Cast<Enum>()
-            .Select(value => new
-            {
-                (Attribute.GetCustomAttribute(value.GetType().GetField(value.ToString()), typeof(DescriptionAttribute)) as DescriptionAttribute).Description,
-                value
-            })
-            .OrderBy(item => item.value)
-            .ToList();
-            cbo.DisplayMember = "Description";
-            cbo.ValueMember = "value";
-        }
-
-        //private void SetSendContent()
-        //{
-        //    string type = this.cbxMsgType.SelectedValue.ToString();
-        //    if (type == MessageTypeEnum.Text.ToString())
-        //    {
-        //        this.btnFile.Enabled = false;
-        //        this.TxtMessage.Enabled = true;
-        //    }
-        //    else if (type == MessageTypeEnum.Image.ToString())
-        //    {
-        //        this.TxtMessage.Text = string.Empty;
-        //        this.TxtMessage.Enabled = false;
-        //        this.btnFile.Enabled = true;
-        //    }
-        //    else if (type == MessageTypeEnum.Video.ToString())
-        //    {
-        //        this.TxtMessage.Text = string.Empty;
-        //        this.TxtMessage.Enabled = false;
-        //        this.btnFile.Enabled = true;
-        //    }
-        //}
+        
 
         private void WindowInit()
         {
-            //this.TxtMessage.Text = DEFAULT_TEXT;
-            //this.TxtMessage.ForeColor = Color.Gray;
             skinTabControl1.TabPages[1].Select();
-            GetLoginQRCode();
-            BindMessageGrid();
+            BindMessageGrid();            
+        }
+
+        public void IsAuth()
+        {
+            ServiceRecordSvc recordSvc = new ServiceRecordSvc();
+            var OperResult = recordSvc.IsAuth();
+            if (OperResult.Code == ResultCodeEnums.Auth)
+            {
+                GetLoginQRCode();
+            }
+            else if (OperResult.Code == ResultCodeEnums.AuthExpire)
+            {
+                MessageBox.Show(OperResult.Msg);
+            }
+            else if (OperResult.Code == ResultCodeEnums.UnAuth)
+            {
+                var result = MessageBox.Show(OperResult.Msg + "，是否现在进行授权", "系统提示", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    this.IsMdiContainer = true;
+                    AuthForm authForm = new AuthForm();
+                    authForm.MdiParent = this;
+                    authForm.Show();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
         }
 
         //private void TxtMessage_Enter(object sender, EventArgs e)
@@ -324,7 +308,7 @@ namespace wxRobot
                     message.Add(msgType);
                 }
             }
-            if (message.Count<=0)
+            if (message.Count <= 0)
             {
                 MessageBox.Show("请选择好你要发送的消息！");
                 return;
@@ -340,12 +324,30 @@ namespace wxRobot
                 msg.To = item.UserName;
                 msg.Type = 1;
                 msg.Time = DateTime.Now;
-                if (item.NickName!="胡永乐"&& item.NickName!="研发基地2")
+                if (item.NickName != "胡永乐" && item.NickName != "研发基地2")
                 {
-                item.SendMsg(msg);
+                    item.SendMsg(msg);
                 }
             }
 
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.Show("你确定要关闭吗！", "提示信息", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if (result == DialogResult.OK)
+            {
+                e.Cancel = false;  //点击OK
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void FormMain_Shown(object sender, EventArgs e)
+        {
+            IsAuth();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace wxRobot.Utils
+namespace wxRobot.Util.Utils
 {
     public class AESCrypt
     {

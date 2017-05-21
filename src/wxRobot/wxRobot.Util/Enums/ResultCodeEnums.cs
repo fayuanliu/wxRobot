@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace wxRobot.Enums
+namespace wxRobot.Util.Enums
 {
     public enum ResultCodeEnums
     {

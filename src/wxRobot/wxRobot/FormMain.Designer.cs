@@ -57,9 +57,9 @@
             this.lblNick = new CCWin.SkinControl.SkinLabel();
             this.picImage = new CCWin.SkinControl.SkinPictureBox();
             this.skinTabPage3 = new CCWin.SkinControl.SkinTabPage();
-            this.wFriendsList1 = new wxRobot.Controls.WFriendsList();
             this.skinTabPage4 = new CCWin.SkinControl.SkinTabPage();
             this.picQRCode = new CCWin.SkinControl.SkinPictureBox();
+            this.wFriendsList1 = new wxRobot.Controls.WFriendsList();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox1)).BeginInit();
             this.skinTabControl1.SuspendLayout();
@@ -392,17 +392,6 @@
             this.skinTabPage3.TabItemImage = null;
             this.skinTabPage3.Text = "好友列表";
             // 
-            // wFriendsList1
-            // 
-            this.wFriendsList1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.wFriendsList1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.wFriendsList1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.wFriendsList1.FormattingEnabled = true;
-            this.wFriendsList1.Location = new System.Drawing.Point(3, 3);
-            this.wFriendsList1.Name = "wFriendsList1";
-            this.wFriendsList1.Size = new System.Drawing.Size(511, 330);
-            this.wFriendsList1.TabIndex = 0;
-            // 
             // skinTabPage4
             // 
             this.skinTabPage4.BackColor = System.Drawing.Color.White;
@@ -424,6 +413,17 @@
             this.picQRCode.TabIndex = 9;
             this.picQRCode.TabStop = false;
             // 
+            // wFriendsList1
+            // 
+            this.wFriendsList1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.wFriendsList1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.wFriendsList1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.wFriendsList1.FormattingEnabled = true;
+            this.wFriendsList1.Location = new System.Drawing.Point(3, 3);
+            this.wFriendsList1.Name = "wFriendsList1";
+            this.wFriendsList1.Size = new System.Drawing.Size(511, 330);
+            this.wFriendsList1.TabIndex = 0;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -441,10 +441,13 @@
             this.Controls.Add(this.skinLabel4);
             this.Controls.Add(this.picQRCode);
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "微信机器人";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
+            this.Shown += new System.EventHandler(this.FormMain_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.skinPictureBox1)).EndInit();
             this.skinTabControl1.ResumeLayout(false);

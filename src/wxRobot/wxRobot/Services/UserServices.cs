@@ -41,6 +41,10 @@ namespace wxRobot.Services
         /// <returns></returns>
         public Image GetIcon(string username)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                return null;
+            }
             byte[] bytes = HttpServer.SendGetRequest(_geticon_url + username);
 
             return Image.FromStream(new MemoryStream(bytes));

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using wxRobot.Enums;
+using wxRobot.Util.Enums;
 
-namespace wxRobot.Utils
+namespace wxRobot.Util.Utils
 {
     public class OperResult
     {

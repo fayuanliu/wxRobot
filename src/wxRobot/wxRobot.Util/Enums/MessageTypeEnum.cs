@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
-namespace wxRobot.Enums
+namespace wxRobot.Util.Enums
 {
     public enum MessageTypeEnum
     {

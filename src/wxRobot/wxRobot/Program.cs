@@ -21,7 +21,7 @@ namespace wxRobot
             //    context.Set<Machine>().Add(new Machine() { MachineCode="123" });
             //    context.SaveChanges();
             //}
-            Application.Run(new FormMain());
+            Application.Run(new AuthForm());
         }
     }
 }
