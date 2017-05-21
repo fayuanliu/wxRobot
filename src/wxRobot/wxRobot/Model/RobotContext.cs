@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
+using wxRobot.Model.Initializer;
 
 namespace wxRobot.Model
 {
@@ -11,14 +13,21 @@ namespace wxRobot.Model
         public RobotContext() 
             :base("RobotDb")
         {
-
+            Configure();
         }
 
-        public DbSet<ServiceRecord> Record { get; set; }
+        private void Configure()
+        {
+            Configuration.ProxyCreationEnabled = true;
+            Configuration.LazyLoadingEnabled = true;
+        }
 
-        public DbSet<OperLog> OperLog { get; set; }
-
-        public DbSet<Machine> Machine { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            modelBuilder.Configurations.AddFromAssembly(typeof(RobotContext).Assembly);
+            Database.SetInitializer(new DbInitializer(modelBuilder));
+        }
 
     }
 }

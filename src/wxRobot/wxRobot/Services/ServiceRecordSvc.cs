@@ -19,7 +19,7 @@ namespace wxRobot.Services
             ServiceRecord record = null;
             using (RobotContext db = new RobotContext())
             {
-                record = db.Record.FirstOrDefault();
+                record = db.Set<ServiceRecord>().FirstOrDefault();
             }
             OperResult result = new OperResult();
             if (record == null)
@@ -69,7 +69,7 @@ namespace wxRobot.Services
             Record.Total = authCode;
             using (RobotContext db = new RobotContext())
             {
-                db.Record.Add(Record);
+                db.Set<ServiceRecord>().Add(Record);
                 int res = db.SaveChanges();
                 if (res > 0)
                 {
@@ -91,14 +91,12 @@ namespace wxRobot.Services
             var machine = svc.Get();
             using (RobotContext db = new RobotContext())
             {
-                var data = db.Record.FirstOrDefault();
+                var data = db.Set<ServiceRecord>().FirstOrDefault();
                 int now = int.Parse(GetAESInfo.Get(data.SurplusTotal, machine.MachineCode));
                 now--;
                 data.SurplusTotal = GetAESInfo.Set(now.ToString(), machine.MachineCode);
                 data.LastOperTime = DateTime.Now;
                 db.SaveChanges();
-                //OperLog log = new OperLog();
-                //db.OperLog.Add()
             }
         }
 

@@ -5,12 +5,8 @@ using System.Text;
 
 namespace wxRobot.Model
 {
-    public class OperLog
+    public class OperLog : BaseEntity
     {
-        /// <summary>
-        /// 主键
-        /// </summary>
-        public Int64 Id { get; set; }
 
         /// <summary>
         /// wx号

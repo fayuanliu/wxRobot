@@ -5,9 +5,8 @@ using System.Text;
 
 namespace wxRobot.Model
 {
-    public class Machine: BaseEntity
+    public class BaseEntity
     {
-
-        public string MachineCode { get; set; }
+        public Int64 Id { get; set; }
     }
 }

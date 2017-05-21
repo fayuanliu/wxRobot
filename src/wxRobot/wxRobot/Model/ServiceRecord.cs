@@ -5,12 +5,8 @@ using System.Text;
 
 namespace wxRobot.Model
 {
-   public class ServiceRecord
+   public class ServiceRecord : BaseEntity
     {
-        /// <summary>
-        /// 主键
-        /// </summary>
-        public Int64 Id { get; set; }
 
         /// <summary>
         /// 可使用总条数

@@ -17,7 +17,7 @@ namespace wxRobot.Services
             mc.MachineCode = code;
             using (RobotContext db = new RobotContext())
             {
-                db.Machine.Add(mc);
+                db.Set<Machine>().Add(mc);
                 db.SaveChanges();
             }
         }
@@ -30,7 +30,7 @@ namespace wxRobot.Services
         {
             using (RobotContext db = new RobotContext())
             {
-                return db.Machine.FirstOrDefault();
+                return db.Set<Machine>().FirstOrDefault();
             }
         }
     }

@@ -324,6 +324,11 @@ namespace wxRobot
                     message.Add(msgType);
                 }
             }
+            if (message.Count<=0)
+            {
+                MessageBox.Show("请选择好你要发送的消息！");
+                return;
+            }
             WXMesssage msg = new WXMesssage();
             var data = message.FirstOrDefault();
             //发消息
