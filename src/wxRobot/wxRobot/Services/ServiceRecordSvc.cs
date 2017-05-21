@@ -63,10 +63,10 @@ namespace wxRobot.Services
                 return result;
             }
             int count = 0;
-            if (int.TryParse(GetAESInfo.Get(authCode,mcCode),out count))
+            if (!int.TryParse(GetAESInfo.Get(authCode,mcCode),out count))
             {
                 result.Code = ResultCodeEnums.warning;
-                result.Msg = "授权码出错，请确认授权码！";
+                result.Msg = "无效的授权码，请输入有效的授权码！";
                 return result;
             }                    
             ServiceRecord Record = new ServiceRecord();

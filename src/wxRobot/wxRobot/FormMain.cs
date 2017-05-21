@@ -63,10 +63,8 @@ namespace wxRobot
                 var result = MessageBox.Show(OperResult.Msg + "，是否现在进行授权", "系统提示", MessageBoxButtons.YesNo);
                 if (result == DialogResult.Yes)
                 {
-                    this.IsMdiContainer = true;
                     AuthForm authForm = new AuthForm();
-                    authForm.MdiParent = this;
-                    authForm.Show();
+                    authForm.ShowDialog();
                 }
                 else
                 {

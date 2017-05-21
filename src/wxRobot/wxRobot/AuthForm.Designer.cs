@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.skinLabel1 = new CCWin.SkinControl.SkinLabel();
-            this.lblMCCode = new CCWin.SkinControl.SkinLabel();
             this.skinLabel3 = new CCWin.SkinControl.SkinLabel();
             this.skinLabel4 = new CCWin.SkinControl.SkinLabel();
             this.txtAuthCode = new CCWin.SkinControl.SkinTextBox();
@@ -38,6 +37,7 @@
             this.skinLabel6 = new CCWin.SkinControl.SkinLabel();
             this.skinLabel7 = new CCWin.SkinControl.SkinLabel();
             this.btnAuth = new CCWin.SkinControl.SkinButton();
+            this.lblMCCode = new CCWin.SkinControl.SkinTextBox();
             this.SuspendLayout();
             // 
             // skinLabel1
@@ -51,18 +51,6 @@
             this.skinLabel1.Size = new System.Drawing.Size(47, 17);
             this.skinLabel1.TabIndex = 0;
             this.skinLabel1.Text = "机器码:";
-            // 
-            // lblMCCode
-            // 
-            this.lblMCCode.AutoSize = true;
-            this.lblMCCode.BackColor = System.Drawing.Color.Transparent;
-            this.lblMCCode.BorderColor = System.Drawing.Color.White;
-            this.lblMCCode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblMCCode.Location = new System.Drawing.Point(158, 134);
-            this.lblMCCode.Name = "lblMCCode";
-            this.lblMCCode.Size = new System.Drawing.Size(168, 17);
-            this.lblMCCode.TabIndex = 1;
-            this.lblMCCode.Text = "0000-0000-0000-0000-0000";
             // 
             // skinLabel3
             // 
@@ -123,7 +111,7 @@
             this.txtAuthCode.SkinTxt.Name = "BaseText";
             this.txtAuthCode.SkinTxt.Size = new System.Drawing.Size(302, 18);
             this.txtAuthCode.SkinTxt.TabIndex = 0;
-            this.txtAuthCode.SkinTxt.Text = "skinTextBox1";
+            this.txtAuthCode.SkinTxt.Text = "请输入代理商给的授权码";
             this.txtAuthCode.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
             this.txtAuthCode.SkinTxt.WaterText = "";
             this.txtAuthCode.TabIndex = 4;
@@ -189,11 +177,56 @@
             this.btnAuth.UseVisualStyleBackColor = false;
             this.btnAuth.Click += new System.EventHandler(this.btnAuth_Click);
             // 
+            // lblMCCode
+            // 
+            this.lblMCCode.BackColor = System.Drawing.Color.Transparent;
+            this.lblMCCode.DownBack = null;
+            this.lblMCCode.Icon = null;
+            this.lblMCCode.IconIsButton = false;
+            this.lblMCCode.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.lblMCCode.IsPasswordChat = '\0';
+            this.lblMCCode.IsSystemPasswordChar = false;
+            this.lblMCCode.Lines = new string[] {
+        "0000-0000-0000-0000-0000"};
+            this.lblMCCode.Location = new System.Drawing.Point(161, 123);
+            this.lblMCCode.Margin = new System.Windows.Forms.Padding(0);
+            this.lblMCCode.MaxLength = 32767;
+            this.lblMCCode.MinimumSize = new System.Drawing.Size(28, 28);
+            this.lblMCCode.MouseBack = null;
+            this.lblMCCode.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.lblMCCode.Multiline = false;
+            this.lblMCCode.Name = "lblMCCode";
+            this.lblMCCode.NormlBack = null;
+            this.lblMCCode.Padding = new System.Windows.Forms.Padding(5);
+            this.lblMCCode.ReadOnly = true;
+            this.lblMCCode.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.lblMCCode.Size = new System.Drawing.Size(312, 28);
+            // 
+            // 
+            // 
+            this.lblMCCode.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lblMCCode.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblMCCode.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.lblMCCode.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.lblMCCode.SkinTxt.Name = "BaseText";
+            this.lblMCCode.SkinTxt.Size = new System.Drawing.Size(302, 18);
+            this.lblMCCode.SkinTxt.TabIndex = 0;
+            this.lblMCCode.SkinTxt.Text = "0000-0000-0000-0000-0000";
+            this.lblMCCode.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.lblMCCode.SkinTxt.WaterText = "";
+            this.lblMCCode.TabIndex = 9;
+            this.lblMCCode.Text = "0000-0000-0000-0000-0000";
+            this.lblMCCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.lblMCCode.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.lblMCCode.WaterText = "";
+            this.lblMCCode.WordWrap = true;
+            // 
             // AuthForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 246);
+            this.Controls.Add(this.lblMCCode);
             this.Controls.Add(this.btnAuth);
             this.Controls.Add(this.skinLabel7);
             this.Controls.Add(this.skinLabel6);
@@ -201,7 +234,6 @@
             this.Controls.Add(this.txtAuthCode);
             this.Controls.Add(this.skinLabel4);
             this.Controls.Add(this.skinLabel3);
-            this.Controls.Add(this.lblMCCode);
             this.Controls.Add(this.skinLabel1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -219,7 +251,6 @@
         #endregion
 
         private CCWin.SkinControl.SkinLabel skinLabel1;
-        private CCWin.SkinControl.SkinLabel lblMCCode;
         private CCWin.SkinControl.SkinLabel skinLabel3;
         private CCWin.SkinControl.SkinLabel skinLabel4;
         private CCWin.SkinControl.SkinTextBox txtAuthCode;
@@ -227,5 +258,6 @@
         private CCWin.SkinControl.SkinLabel skinLabel6;
         private CCWin.SkinControl.SkinLabel skinLabel7;
         private CCWin.SkinControl.SkinButton btnAuth;
+        private CCWin.SkinControl.SkinTextBox lblMCCode;
     }
 }

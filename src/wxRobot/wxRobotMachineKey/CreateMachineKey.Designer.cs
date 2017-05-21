@@ -35,7 +35,7 @@
             this.skinLabel2 = new CCWin.SkinControl.SkinLabel();
             this.skinLabel3 = new CCWin.SkinControl.SkinLabel();
             this.txtCreaterCount = new CCWin.SkinControl.RtfRichTextBox();
-            this.lblAuthCode = new CCWin.SkinControl.SkinLabel();
+            this.lblAuthCode = new CCWin.SkinControl.SkinTextBox();
             this.SuspendLayout();
             // 
             // skinLabel1
@@ -44,7 +44,7 @@
             this.skinLabel1.BackColor = System.Drawing.Color.Transparent;
             this.skinLabel1.BorderColor = System.Drawing.Color.White;
             this.skinLabel1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel1.Location = new System.Drawing.Point(48, 27);
+            this.skinLabel1.Location = new System.Drawing.Point(61, 43);
             this.skinLabel1.Name = "skinLabel1";
             this.skinLabel1.Size = new System.Drawing.Size(56, 17);
             this.skinLabel1.TabIndex = 0;
@@ -53,7 +53,7 @@
             // txtMachineKey
             // 
             this.txtMachineKey.HiglightColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.White;
-            this.txtMachineKey.Location = new System.Drawing.Point(120, 21);
+            this.txtMachineKey.Location = new System.Drawing.Point(133, 37);
             this.txtMachineKey.Name = "txtMachineKey";
             this.txtMachineKey.Size = new System.Drawing.Size(286, 27);
             this.txtMachineKey.TabIndex = 1;
@@ -65,7 +65,7 @@
             this.btnCreate.BackColor = System.Drawing.Color.Transparent;
             this.btnCreate.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.btnCreate.DownBack = null;
-            this.btnCreate.Location = new System.Drawing.Point(420, 145);
+            this.btnCreate.Location = new System.Drawing.Point(430, 158);
             this.btnCreate.MouseBack = null;
             this.btnCreate.Name = "btnCreate";
             this.btnCreate.NormlBack = null;
@@ -81,7 +81,7 @@
             this.skinLabel2.BackColor = System.Drawing.Color.Transparent;
             this.skinLabel2.BorderColor = System.Drawing.Color.White;
             this.skinLabel2.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel2.Location = new System.Drawing.Point(48, 113);
+            this.skinLabel2.Location = new System.Drawing.Point(61, 129);
             this.skinLabel2.Name = "skinLabel2";
             this.skinLabel2.Size = new System.Drawing.Size(56, 17);
             this.skinLabel2.TabIndex = 4;
@@ -93,7 +93,7 @@
             this.skinLabel3.BackColor = System.Drawing.Color.Transparent;
             this.skinLabel3.BorderColor = System.Drawing.Color.White;
             this.skinLabel3.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.skinLabel3.Location = new System.Drawing.Point(12, 70);
+            this.skinLabel3.Location = new System.Drawing.Point(25, 86);
             this.skinLabel3.Name = "skinLabel3";
             this.skinLabel3.Size = new System.Drawing.Size(92, 17);
             this.skinLabel3.TabIndex = 5;
@@ -102,7 +102,7 @@
             // txtCreaterCount
             // 
             this.txtCreaterCount.HiglightColor = CCWin.SkinControl.RtfRichTextBox.RtfColor.White;
-            this.txtCreaterCount.Location = new System.Drawing.Point(120, 61);
+            this.txtCreaterCount.Location = new System.Drawing.Point(133, 77);
             this.txtCreaterCount.Name = "txtCreaterCount";
             this.txtCreaterCount.Size = new System.Drawing.Size(286, 26);
             this.txtCreaterCount.TabIndex = 6;
@@ -112,21 +112,53 @@
             // 
             // lblAuthCode
             // 
-            this.lblAuthCode.AutoSize = true;
             this.lblAuthCode.BackColor = System.Drawing.Color.Transparent;
-            this.lblAuthCode.BorderColor = System.Drawing.Color.White;
-            this.lblAuthCode.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblAuthCode.Location = new System.Drawing.Point(117, 113);
+            this.lblAuthCode.DownBack = null;
+            this.lblAuthCode.Icon = null;
+            this.lblAuthCode.IconIsButton = false;
+            this.lblAuthCode.IconMouseState = CCWin.SkinClass.ControlState.Normal;
+            this.lblAuthCode.IsPasswordChat = '\0';
+            this.lblAuthCode.IsSystemPasswordChar = false;
+            this.lblAuthCode.Lines = new string[] {
+        "0000-0000-0000-0000"};
+            this.lblAuthCode.Location = new System.Drawing.Point(134, 118);
+            this.lblAuthCode.Margin = new System.Windows.Forms.Padding(0);
+            this.lblAuthCode.MaxLength = 32767;
+            this.lblAuthCode.MinimumSize = new System.Drawing.Size(28, 28);
+            this.lblAuthCode.MouseBack = null;
+            this.lblAuthCode.MouseState = CCWin.SkinClass.ControlState.Normal;
+            this.lblAuthCode.Multiline = false;
             this.lblAuthCode.Name = "lblAuthCode";
-            this.lblAuthCode.Size = new System.Drawing.Size(135, 17);
-            this.lblAuthCode.TabIndex = 7;
+            this.lblAuthCode.NormlBack = null;
+            this.lblAuthCode.Padding = new System.Windows.Forms.Padding(5);
+            this.lblAuthCode.ReadOnly = true;
+            this.lblAuthCode.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.lblAuthCode.Size = new System.Drawing.Size(285, 28);
+            // 
+            // 
+            // 
+            this.lblAuthCode.SkinTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lblAuthCode.SkinTxt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblAuthCode.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
+            this.lblAuthCode.SkinTxt.Location = new System.Drawing.Point(5, 5);
+            this.lblAuthCode.SkinTxt.Name = "BaseText";
+            this.lblAuthCode.SkinTxt.Size = new System.Drawing.Size(275, 18);
+            this.lblAuthCode.SkinTxt.TabIndex = 0;
+            this.lblAuthCode.SkinTxt.Text = "0000-0000-0000-0000";
+            this.lblAuthCode.SkinTxt.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.lblAuthCode.SkinTxt.WaterText = "";
+            this.lblAuthCode.TabIndex = 8;
             this.lblAuthCode.Text = "0000-0000-0000-0000";
+            this.lblAuthCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.lblAuthCode.WaterColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(127)))), ((int)(((byte)(127)))));
+            this.lblAuthCode.WaterText = "";
+            this.lblAuthCode.WordWrap = true;
             // 
             // CreateMachineKey
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(553, 180);
+            this.ClientSize = new System.Drawing.Size(553, 203);
             this.Controls.Add(this.lblAuthCode);
             this.Controls.Add(this.txtCreaterCount);
             this.Controls.Add(this.skinLabel3);
@@ -151,7 +183,7 @@
         private CCWin.SkinControl.SkinLabel skinLabel2;
         private CCWin.SkinControl.SkinLabel skinLabel3;
         private CCWin.SkinControl.RtfRichTextBox txtCreaterCount;
-        private CCWin.SkinControl.SkinLabel lblAuthCode;
+        private CCWin.SkinControl.SkinTextBox lblAuthCode;
     }
 }
 

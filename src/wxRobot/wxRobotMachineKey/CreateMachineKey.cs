@@ -34,7 +34,7 @@ namespace wxRobotMachineKey
                 return;
             }
             int count = 0;
-            if (int.TryParse(txtCreaterCount.Text,out count))
+            if (!int.TryParse(txtCreaterCount.Text,out count))
             {
                 MessageBox.Show("请输入正确的生成资数（必须为数字）！");
                 return;

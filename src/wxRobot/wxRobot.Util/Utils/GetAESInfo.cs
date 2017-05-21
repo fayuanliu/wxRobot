@@ -11,14 +11,14 @@ namespace wxRobot.Util.Utils
         {
             AESCrypt aes = new AESCrypt();
             aes.ContainKey = true;
-           return aes.Encrypt(data);
+           return aes.Decrypt(data);
         }
 
         public static string Get(string data,string key)
         {
             AESCrypt aes = new AESCrypt();
             aes.ContainKey = false;
-            return aes.Encrypt(data,key);
+            return aes.Decrypt(data,key);
         }
 
         public static string Set(string data)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using wxRobot.Services;
+using wxRobot.Util.Enums;
 using wxRobot.Util.Utils;
 
 namespace wxRobot
@@ -29,7 +30,12 @@ namespace wxRobot
             else
             {
                 ServiceRecordSvc recordSvc = new ServiceRecordSvc();
-                recordSvc.Auth(this.txtAuthCode.Text, this.lblMCCode.Text);
+                OperResult result = recordSvc.Auth(this.txtAuthCode.Text, this.lblMCCode.Text);
+                if (result.Code!= ResultCodeEnums.Auth)
+                {
+                    MessageBox.Show(result.Msg);
+                    return;
+                }
             }
         }
 
