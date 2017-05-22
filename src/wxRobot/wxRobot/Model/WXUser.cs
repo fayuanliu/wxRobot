@@ -129,5 +129,11 @@ namespace wxRobot.Model
             WXServices wxs = new WXServices();
             wxs.SendMessage(msg.Msg, msg.From, msg.To, msg.Type);
         }
+
+        public void SendVideo(WXMesssage msg)
+        {
+            WXServices wxs = new WXServices();
+            wxs.SendVideo(msg.MediaId, msg.From, msg.To);
+        }
     }
 }

@@ -43,7 +43,9 @@ namespace wxRobot
         private void WindowInit()
         {
             skinTabControl1.TabPages[1].Select();
-            BindMessageGrid();            
+            BindMessageGrid();
+            //扫码
+            GetLoginQRCode();
         }
 
         public void IsAuth()
@@ -72,43 +74,6 @@ namespace wxRobot
                 }
             }
         }
-
-        //private void TxtMessage_Enter(object sender, EventArgs e)
-        //{
-        //    if (this.TxtMessage.Text == "请输入你要发送的信息")
-        //    {
-        //        this.TxtMessage.Text = string.Empty;
-        //        this.TxtMessage.ForeColor = Color.Black;
-        //    }
-        //}
-
-        //private void TxtMessage_Leave(object sender, EventArgs e)
-        //{
-        //    if (String.IsNullOrEmpty(TxtMessage.Text))
-        //    {
-        //        this.TxtMessage.Text = DEFAULT_TEXT;
-        //        this.TxtMessage.ForeColor = Color.Gray;
-        //    }
-
-        //}
-
-        //private void btnFile_Click(object sender, EventArgs e)
-        //{
-        //    string type = this.cbxMsgType.SelectedValue.ToString();
-        //    OpenFileDialog fileDialog = new OpenFileDialog();
-        //    if (fileDialog.ShowDialog() == DialogResult.OK)
-        //    {
-        //        string extension = Path.GetExtension(fileDialog.FileName);
-        //        if (type == MessageTypeEnum.Image.ToString())
-        //        {
-        //            JudgedImage(fileDialog, extension);
-        //        }
-        //        else if(type == MessageTypeEnum.Video.ToString())
-        //        {
-        //            JudgedVideo(fileDialog, extension);
-        //        }
-        //    }
-        //}
 
         private void JudgedImage(OpenFileDialog fileDialog, string extension)
         {
@@ -321,10 +286,11 @@ namespace wxRobot
                 msg.Readed = false;
                 msg.To = item.UserName;
                 msg.Type = 1;
+                msg.MediaId = "@crypt_9fa1d1f2_403e6d350b3dd0b761d6db8f822321e95cde3c433fd7d85af0e09c4f2c128b57f8ee75818ab3e6734e6384686fc7d595ae02d7faf1c5258134263e49e744c19159019fd3873fd96c130be4a807d304916ae4547ebf6efe5596c4ec08d35035e05f98b2161187307077722d89154d9c3156d7d18db3cc72b430b797fb6a4696d6fea5dd365393367e78427989214496eeb6dfe016c6de7f847e921250f70191f552ce3a03ed2b6aecdf569b6d7ea446818de3b11c00b073a39e78859fcdde0f7d442554464f2c768588b0540c9277373d67864a28391f173efa81f160c0c8b98d3e57ce9d8694a4d6b560daf9ce3a8bb503fc10f3441c6a708c922e277e37d3268bbd285ed40d8eea217d3a405c9812dc9103892826189cdb5636cae53b945108755a670727e16a7a3e0a0d82289457ea";
                 msg.Time = DateTime.Now;
                 if (item.NickName != "胡永乐" && item.NickName != "研发基地2")
                 {
-                    item.SendMsg(msg);
+                    item.SendVideo(msg);
                 }
             }
 
@@ -345,7 +311,7 @@ namespace wxRobot
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            IsAuth();
+           // IsAuth();
         }
     }
 }

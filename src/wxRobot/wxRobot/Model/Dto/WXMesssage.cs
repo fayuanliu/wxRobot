@@ -55,5 +55,10 @@ namespace wxRobot.Model.Dto
             get;
             set;
         }
+
+        /// <summary>
+        /// 媒体
+        /// </summary>
+        public string MediaId { get; set; }
     }
 }

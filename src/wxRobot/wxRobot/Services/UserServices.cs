@@ -14,13 +14,13 @@ namespace wxRobot.Services
     public class UserServices
     {
         //获取好友头像
-        private static string _geticon_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=";
+        private static string _geticon_url = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=";
         //获取群聊（组）头像
-        private static string _getheadimg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetheadimg?username=";
+        private static string _getheadimg_url = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetheadimg?username=";
         //获取好友列表
-        private static string _getcontact_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact";
+        private static string _getcontact_url = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact";
 
-       
+
 
         /// <summary>
         /// 获取微信讨论组头像
@@ -41,13 +41,22 @@ namespace wxRobot.Services
         /// <returns></returns>
         public Image GetIcon(string username)
         {
-            if (string.IsNullOrEmpty(username))
+            //if (string.IsNullOrEmpty(username))
+            //{
+            //    return null;
+            //}
+            try
+            {
+                byte[] bytes = HttpServer.SendGetRequest(_geticon_url + username);
+
+                return Image.FromStream(new MemoryStream(bytes));
+            }
+            catch
             {
                 return null;
-            }
-            byte[] bytes = HttpServer.SendGetRequest(_geticon_url + username);
 
-            return Image.FromStream(new MemoryStream(bytes));
+            }
+
         }
 
         /// <summary>

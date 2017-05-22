@@ -12,11 +12,31 @@ namespace wxRobot.Services
     public class WXServices
     {
         private static Dictionary<string, string> _syncKey = new Dictionary<string, string>();
-        //微信初始化url
-        private static string _init_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=1377482058764";
+        /// <summary>
+        /// 微信初始化url
+        /// </summary>
 
-        //发送消息url
-        private static string _sendmsg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
+        private static string _init_url = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=884513456464";
+        
+        /// <summary>
+        /// 发送消息url
+        /// </summary>
+        private static string _sendmsg_url = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
+
+        /// <summary>
+        /// 上传文件
+        /// </summary>
+        private static string _uplpadFileUrl = "https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";
+
+        /// <summary>
+        /// 发送图片消息
+        /// </summary>
+        private static string _sendmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json";
+
+        /// <summary>
+        /// 发送视频消息
+        /// </summary>
+        private static string _sendvideomsg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json";
 
         /// <summary>
         /// 微信初始化
@@ -24,14 +44,14 @@ namespace wxRobot.Services
         /// <returns></returns>
         public JObject WxInit()
         {
-            string init_json = "{{\"BaseRequest\":{{\"Uin\":\"{0}\",\"Sid\":\"{1}\",\"Skey\":\"\",\"DeviceID\":\"e1615250492\"}}}}";
+            string init_json = "{{\"BaseRequest\":{{\"Uin\":\"{0}\",\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e1615250492\"}}}}";
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
 
             if (sid != null && uin != null)
             {
-                init_json = string.Format(init_json, uin.Value, sid.Value);
-                byte[] bytes = HttpServer.SendPostRequest(_init_url + "&pass_ticket=" + LoginService.Pass_Ticket, init_json);
+                init_json = string.Format(init_json, uin.Value, sid.Value,LoginService.SKey);
+                byte[] bytes = HttpServer.SendPostRequest(_init_url + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, init_json);
                 string init_str = Encoding.UTF8.GetString(bytes);
 
                 JObject init_result = JsonConvert.DeserializeObject(init_str) as JObject;
@@ -49,7 +69,7 @@ namespace wxRobot.Services
         }
 
         /// <summary>
-        /// 发送消息
+        /// 发送文本消息
         /// </summary>
         /// <param name="msg">内容</param>
         /// <param name="from">来</param>
@@ -86,6 +106,33 @@ namespace wxRobot.Services
 
                 string send_result = Encoding.UTF8.GetString(bytes);
             }
+        }
+
+
+        public void SendVideo(string MediaId, string from, string to)
+        {
+           string msg_json= "{{\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e513037603731077\"}},"+
+                "\"Msg\":{{"+
+                "\"Type\":43,"+
+                "\"MediaId\":\"{3}\"," +
+                "\"Content\":\"\"," +
+                "\"FromUserName\":\"{4}\"," +
+                "\"ToUserName\":\"{5}\"," +
+                "\"LocalID\":\"{6}\"," +
+                "\"ClientMsgId\":\"{7}\"}}," + 
+                "\"Scene\":0"+
+                "}}";
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            if (sid != null && uin != null)
+            {
+                msg_json = string.Format(msg_json, uin.Value,sid.Value, LoginService.SKey, MediaId, from, to, DateTime.Now.Millisecond, DateTime.Now.Millisecond);
+
+                byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
+                string send_result = Encoding.UTF8.GetString(bytes);
+            }
+
+
         }
 
     }
