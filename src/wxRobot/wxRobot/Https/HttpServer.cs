@@ -55,6 +55,24 @@ namespace wxRobot.Https
             }
         }
 
+        public static byte[] SetPostRequest(string url,byte[] postbody)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "post";
+            var sw = new StreamWriter(request.GetRequestStream());
+            sw.Write(postbody);
+            sw.Flush();
+            //文件数据不能读为string，要直接读byte
+            FileStream fs = fi.OpenRead();
+            byte[] buffer = new byte[1024];
+            int bytesRead = 0;
+            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                sw.BaseStream.Write(buffer, 0, bytesRead);
+            }
+
+        }
+
         /// <summary>
         /// 向服务器发送post请求 返回服务器回复数据
         /// </summary>
