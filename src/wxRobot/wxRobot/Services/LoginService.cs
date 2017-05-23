@@ -20,7 +20,7 @@ namespace wxRobot.Services
         //获取二维码的URL
         private static string _qrcode_url = "https://login.weixin.qq.com/qrcode/"; //后面增加会话id
         //判断二维码扫描情况   200表示扫描登录  201表示已扫描未登录  其它表示未扫描
-        private static string _login_check_url = "https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid="; //后面增加会话id
+        private static string _login_check_url = "https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?loginicon=true&uuid="; 
 
         public Image GetQRCode()
         {

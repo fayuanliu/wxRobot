@@ -63,14 +63,14 @@ namespace wxRobot.Https
             sw.Write(postbody);
             sw.Flush();
             //文件数据不能读为string，要直接读byte
-            FileStream fs = fi.OpenRead();
+           // FileStream fs = fi.OpenRead();
             byte[] buffer = new byte[1024];
             int bytesRead = 0;
-            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
-            {
-                sw.BaseStream.Write(buffer, 0, bytesRead);
-            }
-
+            //while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
+            //{
+            //    sw.BaseStream.Write(buffer, 0, bytesRead);
+            //}
+            return null;
         }
 
         /// <summary>

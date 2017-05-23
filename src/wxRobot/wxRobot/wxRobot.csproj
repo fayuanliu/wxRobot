@@ -97,6 +97,7 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Https\HttpApi.cs" />
     <Compile Include="Https\HttpServer.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Dto\MessageType.cs" />

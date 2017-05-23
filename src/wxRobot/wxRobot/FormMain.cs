@@ -13,6 +13,7 @@ using wxRobot.Util.Enums;
 using wxRobot.Model;
 using wxRobot.Model.Dto;
 using wxRobot.Services;
+using wxRobot.Https;
 
 namespace wxRobot
 {
@@ -38,14 +39,14 @@ namespace wxRobot
             WindowInit();
         }
 
-        
+
 
         private void WindowInit()
         {
             skinTabControl1.TabPages[1].Select();
-            BindMessageGrid();
             //扫码
             GetLoginQRCode();
+            BindMessageGrid();
         }
 
         public void IsAuth()
@@ -169,6 +170,9 @@ namespace wxRobot
 
                             //访问登录跳转URL
                             ls.GetSidUid(login_result as string);
+                            //初始化API
+                            HttpApi api = new HttpApi();
+                            api.InitApi(login_result.ToString());
                             //获取好友和并绑定
                             UserServices userServices = new UserServices();
                             WXServices wxServices = new WXServices();
@@ -311,7 +315,7 @@ namespace wxRobot
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-           // IsAuth();
+            // IsAuth();
         }
     }
 }

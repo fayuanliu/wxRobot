@@ -14,11 +14,14 @@ namespace wxRobot.Services
     public class UserServices
     {
         //获取好友头像
-        private static string _geticon_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=";
+        private  string _geticon_url = HttpApi.Api["_geticon_url"].ToString();
+        //private static string _geticon_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgeticon?username=";
         //获取群聊（组）头像
-        private static string _getheadimg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetheadimg?username=";
+        private string _getheadimg_url = HttpApi.Api["_getheadimg_url"].ToString();
+        // private static string _getheadimg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetheadimg?username=";
         //获取好友列表
-        private static string _getcontact_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact";
+        private string _getcontact_url = HttpApi.Api["_getcontact_url"].ToString();
+        // private static string _getcontact_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact";
 
 
 

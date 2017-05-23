@@ -17,29 +17,29 @@ namespace wxRobot.Services
         /// <summary>
         /// 微信初始化url
         /// </summary>
-
-        private static string _init_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=884513456464";
+        private string _init_url = HttpApi.Api["_init_url"].ToString();
+        //private static string _init_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=884513456464";
 
         /// <summary>
         /// 发送消息url
         /// </summary>
-        private static string _sendmsg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
-
+        //private static string _sendmsg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
+        private string _sendmsg_url = HttpApi.Api["_sendmsg_url"].ToString();
         /// <summary>
         /// 上传文件
         /// </summary>
-        private static string _uplpadFileUrl = "https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";
-
+        //private static string _uplpadFileUrl = "https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";
+        private string _uplpadFileUrl = HttpApi.Api["_uplpadFileUrl"].ToString();
         /// <summary>
         /// 发送图片消息
         /// </summary>
-        private static string _sendmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json";
-
+       // private static string _sendmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json";
+        private string _sendmsgimg = HttpApi.Api["_sendmsgimg"].ToString();
         /// <summary>
         /// 发送视频消息
         /// </summary>
-        private static string _sendvideomsg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json";
-
+        //private static string _sendvideomsg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json";
+        private string _sendvideomsg = HttpApi.Api["_sendvideomsg"].ToString();
         /// <summary>
         /// 微信初始化
         /// </summary>
@@ -193,8 +193,8 @@ namespace wxRobot.Services
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
 
 
-          
 
+            return false;
 
 
 
