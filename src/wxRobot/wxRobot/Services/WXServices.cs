@@ -18,27 +18,27 @@ namespace wxRobot.Services
         /// 微信初始化url
         /// </summary>
         private string _init_url = HttpApi.Api["_init_url"].ToString();
-        //private static string _init_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=884513456464";
+        //private static string _init_url="https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=884513456464";
 
         /// <summary>
         /// 发送消息url
         /// </summary>
-        //private static string _sendmsg_url = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
+        //private static string _sendmsg_url="https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=";
         private string _sendmsg_url = HttpApi.Api["_sendmsg_url"].ToString();
         /// <summary>
         /// 上传文件
         /// </summary>
-        //private static string _uplpadFileUrl = "https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";
+        //private static string _uplpadFileUrl="https://file.wx.qq.com/cgi-bin/mmwebwx-bin/webwxuploadmedia?f=json";
         private string _uplpadFileUrl = HttpApi.Api["_uplpadFileUrl"].ToString();
         /// <summary>
         /// 发送图片消息
         /// </summary>
-       // private static string _sendmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json";
+       // private static string _sendmsgimg="https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json";
         private string _sendmsgimg = HttpApi.Api["_sendmsgimg"].ToString();
         /// <summary>
         /// 发送视频消息
         /// </summary>
-        //private static string _sendvideomsg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json";
+        //private static string _sendvideomsg="https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json";
         private string _sendvideomsg = HttpApi.Api["_sendvideomsg"].ToString();
         /// <summary>
         /// 微信初始化
@@ -138,66 +138,147 @@ namespace wxRobot.Services
         public bool UplpadImage(string path, string from, string to)
         {
             FileInfo file = new FileInfo(path);
-            if (File.Exists(path))
+            if (!File.Exists(path))
             {
                 return false;
             }
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
+            Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
             if (sid == null || uin == null)
             {
                 return false;
             }
-                StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
+            sb.Append("\r\n");
             sb.Append("Content-Disposition: form-data; name=\"id\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.Append("WU_FILE_3");
-
+            sb.Append("\r\n");
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
+            sb.Append("\r\n");
             sb.Append("Content-Disposition: form-data; name=\"name\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.AppendFormat("{0}", file.Name);
-
+            sb.Append("\r\n");
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
+            sb.Append("\r\n");
             sb.Append("Content-Disposition: form-data; name=\"type\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.Append("image/jpeg");
-
+            sb.Append("\r\n");
             sb.Append("Thu Apr 27 2017 17:41:44 GMT + 0800(中国标准时间)");
+            sb.Append("\r\n");
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("Content - Disposition: form - data; name = \"size\"");
+            sb.Append("\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"size\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.AppendFormat("{0}", file.Length);
-
+            sb.Append("\r\n");
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
+            sb.Append("\r\n");
             sb.Append("Content-Disposition: form-data; name=\"mediatype\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.Append("pic");
-
+            sb.Append("\r\n");
             sb.Append(" ------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("Content - Disposition: form - data; name = \"uploadmediarequest\"");
+            sb.Append("\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"uploadmediarequest\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"{3}\"}},", uin.Value, sid.Value, LoginService.SKey, "e441551176");
-            sb.AppendFormat("\"ClientMediaId\":1495504330434,\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{2}\",\"ToUserName\":\"{3}\",\"FileMd5\":\"{4}\"}}",file.Length,file.Length,from,to, GetFileMD5Hash.GetMD5Hash(path));
-            
-            //sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            //sb.Append("Content - Disposition: form - data; name = \"webwx_data_ticket\"");
-            //sb.Append("gSdeGvjD1zppFULRjcSogsUA");
-
+            sb.AppendFormat("\"ClientMediaId\":1495504330434,\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{2}\",\"ToUserName\":\"{3}\",\"FileMd5\":\"{4}\"}}", file.Length, file.Length, from, to, GetFileMD5Hash.GetMD5Hash(path));
+            sb.Append("\r\n");
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("Content - Disposition: form - data; name = \"pass_ticket\"");
+            sb.Append("\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"webwx_data_ticket\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
+            sb.Append(webwx_data_ticket);
+            sb.Append("\r\n");
+            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
+            sb.Append("\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"pass_ticket\"");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             sb.AppendFormat("{0}", LoginService.Pass_Ticket);
-
-
+            sb.Append("\r\n");
             sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.AppendFormat("Content-Disposition: form-data; name=\"filename\"; filename=\"{0}\"",file.Name);
+            sb.Append("\r\n");
+            sb.AppendFormat("Content-Disposition: form-data; name=\"filename\"; filename=\"{0}\"", file.Name);
             sb.Append("Content-Type: image/jpeg");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
             //这里是文件数据
 
+            var bodyEnd = string.Format("\r\n------WebKitFormBoundarySSiYA5Ymp2LMopeV\r\n");
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), file, bodyEnd);
+            string send_result = Encoding.UTF8.GetString(bytes);
+            return true;
+        }
 
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
+        public void UploadFile2(string path, string from, string to)
+        {
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
+            if (sid == null || uin == null)
+            {
+                return;
+            }
+            FileInfo file = new FileInfo(path);
+            byte[] UploadBuffers = null;
+            string BoundStr = "-----------------------------7e1b8d1488";//根据抓包生成
+            StringBuilder sb = new StringBuilder();
+            sb.Append(BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"id\"\r\n\r\n");
+            sb.Append("WU_FILE_0");
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"name\"\r\n\r\n");
+            sb.Append(file.Name);
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"type\"\r\n\r\n");
 
+            sb.Append("image/jpeg");
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n");
 
-
-            return false;
-
-
-
+            sb.Append("Sat May 20 2017 17:40:17 GMT + 0800(ä¸­å½æ åæ¶é´)");
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"size\"\r\n\r\n");
+            sb.Append(file.Length);
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n");
+            sb.Append("pic");
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n");
+            sb.Append("{\"UploadType\":2,\"BaseRequest\":");
+            sb.AppendFormat("{{ \"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e291903348370866\"}},", uin.Value, sid.Value, LoginService.SKey);
+            sb.AppendFormat("\"ClientMediaId\":{5},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{2}\",\"ToUserName\":\"{3}\",\"FileMd5\":\"{4}\"", file.Length, file.Length, from, to, GetFileMD5Hash.GetMD5Hash(path), DateTime.Now.ToString
+("yyyyMMddHHmmssfff"));
+            sb.Append("}");
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"webwx_data_ticket\"\r\n\r\n");
+            sb.Append(webwx_data_ticket.Value);
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"pass_ticket\"\r\n\r\n");
+            sb.Append(LoginService.Pass_Ticket);
+            sb.Append("\r\n" + BoundStr + "\r\n");
+            sb.Append("Content-Disposition: form-data; name=\"filename\"; filename=\"default.jpg\"\r\n");
+            sb.Append("Content-Type: image/jpeg\r\n");
+            #region 图片数据
+            byte[] PicBytes = Utils.ImageToBytesFromFilePath(path);
+            #endregion
+            byte[] TailBytes = Encoding.ASCII.GetBytes(sb.ToString());
+            UploadBuffers = Utils.ComposeArrays(TailBytes,PicBytes);
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, UploadBuffers, "multipart/form-data;boundary=" + BoundStr.Substring(2));
+            string send_result = Encoding.UTF8.GetString(bytes);
         }
 
         public void SendImage(string MediaId, string from, string to)

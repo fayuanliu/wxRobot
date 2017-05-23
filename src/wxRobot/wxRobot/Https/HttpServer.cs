@@ -55,22 +55,90 @@ namespace wxRobot.Https
             }
         }
 
-        public static byte[] SetPostRequest(string url,byte[] postbody)
+        public static byte[] SendPostRequest(string url,string body,FileInfo file,string bodyEnd)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "post";
-            var sw = new StreamWriter(request.GetRequestStream());
-            sw.Write(postbody);
-            sw.Flush();
-            //文件数据不能读为string，要直接读byte
-           // FileStream fs = fi.OpenRead();
-            byte[] buffer = new byte[1024];
-            int bytesRead = 0;
-            //while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
-            //{
-            //    sw.BaseStream.Write(buffer, 0, bytesRead);
-            //}
-            return null;
+            try
+            {
+                byte[] request_body = Encoding.UTF8.GetBytes(body);
+                byte[] request_bodyEnd = Encoding.UTF8.GetBytes(bodyEnd);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "post";
+                request.ContentLength = request_body.Length+file.Length+ request_bodyEnd.Length;
+                Stream request_stream = request.GetRequestStream();
+                request_stream.Write(request_body, 0, request_body.Length);
+                FileStream fs = file.OpenRead();
+                byte[] buffer = new byte[1024];
+                int bytesRead = 0;
+                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    request_stream.Write(buffer, 0, bytesRead);
+                }
+                fs.Close();
+                request_stream.Write(request_bodyEnd, 0, request_bodyEnd.Length);
+
+                if (CookiesContainer == null)
+                {
+                    CookiesContainer = new CookieContainer();
+                }
+                request.CookieContainer = CookiesContainer;  //启用cookie
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream response_stream = response.GetResponseStream();
+                int count = (int)response.ContentLength;
+                int offset = 0;
+                byte[] buf = new byte[count];
+                while (count > 0)  //读取返回数据
+                {
+                    int n = response_stream.Read(buf, offset, count);
+                    if (n == 0) break;
+                    count -= n;
+                    offset += n;
+                }
+                return buf;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static byte[] SendPostRequest(string url, byte[] request_body, string ContentType)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "post";
+                request.ContentLength = request_body.Length;
+                request.ContentType = ContentType;
+                Stream request_stream = request.GetRequestStream();
+
+                request_stream.Write(request_body, 0, request_body.Length);
+
+                if (CookiesContainer == null)
+                {
+                    CookiesContainer = new CookieContainer();
+                }
+                request.CookieContainer = CookiesContainer;  //启用cookie
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream response_stream = response.GetResponseStream();
+
+                int count = (int)response.ContentLength;
+                int offset = 0;
+                byte[] buf = new byte[count];
+                while (count > 0)  //读取返回数据
+                {
+                    int n = response_stream.Read(buf, offset, count);
+                    if (n == 0) break;
+                    count -= n;
+                    offset += n;
+                }
+                return buf;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>
