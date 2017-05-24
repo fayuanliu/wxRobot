@@ -209,6 +209,8 @@ namespace wxRobot.Https
                     sw.BaseStream.Write(buffer, 0, bytesRead);
                 }
                 sw.Write("\r\n------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n");
+                sw.Flush();
+                sw.Close();
                 if (CookiesContainer == null)
                 {
                     CookiesContainer = new CookieContainer();
