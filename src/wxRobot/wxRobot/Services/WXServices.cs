@@ -138,7 +138,7 @@ namespace wxRobot.Services
 
 
 
-        public bool UploadFile3(string path, string from, string to)
+        public string UploadImage(string path)
         {
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
@@ -147,160 +147,19 @@ namespace wxRobot.Services
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
             sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
             byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", file);
-            string send_result = Encoding.UTF8.GetString(bytes);
-            return true;
+            string send_result = string.Empty;
+            if (bytes != null)
+            {
+                send_result = Encoding.UTF8.GetString(bytes);
+            }
+            return send_result;
         }
 
-        public bool UplpadImage(string path, string from, string to)
-        {
-            FileInfo file = new FileInfo(path);
-            if (!File.Exists(path))
-            {
-                return false;
-            }
-            Cookie sid = HttpServer.GetCookie("wxsid");
-            Cookie uin = HttpServer.GetCookie("wxuin");
-            Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
-            if (sid == null || uin == null)
-            {
-                return false;
-            }
-            StringBuilder sb = new StringBuilder();
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"id\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.Append("WU_FILE_3");
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"name\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.AppendFormat("{0}", file.Name);
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"type\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.Append("image/jpeg");
-            sb.Append("\r\n");
-            sb.Append("Thu Apr 27 2017 17:41:44 GMT + 0800(中国标准时间)");
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"size\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.AppendFormat("{0}", file.Length);
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"mediatype\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.Append("pic");
-            sb.Append("\r\n");
-            sb.Append(" ------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"uploadmediarequest\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"{3}\"}},", uin.Value, sid.Value, LoginService.SKey, "e441551176");
-            sb.AppendFormat("\"ClientMediaId\":1495504330434,\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{2}\",\"ToUserName\":\"{3}\",\"FileMd5\":\"{4}\"}}", file.Length, file.Length, from, to, GetFileMD5Hash.GetMD5Hash(path));
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"webwx_data_ticket\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.Append(webwx_data_ticket);
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"pass_ticket\"");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            sb.AppendFormat("{0}", LoginService.Pass_Ticket);
-            sb.Append("\r\n");
-            sb.Append("------WebKitFormBoundarySSiYA5Ymp2LMopeV");
-            sb.Append("\r\n");
-            sb.AppendFormat("Content-Disposition: form-data; name=\"filename\"; filename=\"{0}\"", file.Name);
-            sb.Append("Content-Type: image/jpeg");
-            sb.Append("\r\n");
-            sb.Append("\r\n");
-            //这里是文件数据
-
-            var bodyEnd = string.Format("\r\n------WebKitFormBoundarySSiYA5Ymp2LMopeV\r\n");
-            //byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), file, bodyEnd);
-           // string send_result = Encoding.UTF8.GetString(bytes);
-            return true;
-        }
-
-        public void UploadFile2(string path, string from, string to)
-        {
-            Cookie sid = HttpServer.GetCookie("wxsid");
-            Cookie uin = HttpServer.GetCookie("wxuin");
-            Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
-            if (sid == null || uin == null)
-            {
-                return;
-            }
-            FileInfo file = new FileInfo(path);
-            byte[] UploadBuffers = null;
-            string BoundStr = "-----------------------------7e1b8d1488";//根据抓包生成
-            StringBuilder sb = new StringBuilder();
-            sb.Append(BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"id\"\r\n\r\n");
-            sb.Append("WU_FILE_0");
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"name\"\r\n\r\n");
-            sb.Append(file.Name);
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"type\"\r\n\r\n");
-
-            sb.Append("image/jpeg");
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n");
-
-            sb.Append("Sat May 20 2017 17:40:17 GMT + 0800(中国标准时间)");
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"size\"\r\n\r\n");
-            sb.Append(file.Length);
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n");
-            sb.Append("pic");
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n");
-            sb.Append("{\"UploadType\":2,\"BaseRequest\":");
-            sb.AppendFormat("{{ \"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e291903348370866\"}},", uin.Value, sid.Value, LoginService.SKey);
-            sb.AppendFormat("\"ClientMediaId\":{5},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{2}\",\"ToUserName\":\"{3}\",\"FileMd5\":\"{4}\"", file.Length, file.Length, from, to, GetFileMD5Hash.GetMD5Hash(path), DateTime.Now.ToString
-("yyyyMMddHHmmssfff"));
-            sb.Append("}");
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"webwx_data_ticket\"\r\n\r\n");
-            sb.Append(webwx_data_ticket.Value);
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"pass_ticket\"\r\n\r\n");
-            sb.Append(LoginService.Pass_Ticket);
-            sb.Append("\r\n" + BoundStr + "\r\n");
-            sb.Append("Content-Disposition: form-data; name=\"filename\"; filename=\"default.jpg\"\r\n");
-            sb.Append("Content-Type: image/jpeg\r\n");
-            //#region 图片数据
-            //byte[] PicBytes = Utils.ImageToBytesFromFilePath(path);
-            //#endregion
-            //byte[] TailBytes = Encoding.UTF8.GetBytes(sb.ToString());
-            //UploadBuffers = Utils.ComposeArrays(TailBytes,PicBytes);
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(),file, BoundStr);
-            string send_result = Encoding.UTF8.GetString(bytes);
-        }
 
         public void SendImage(string MediaId, string from, string to)
         {
             string msg_json = "{{\"BaseRequest\":" +
-                             "{{ \"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e538658052090631\"}}," +
+                             "{{ \"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{8}\"}}," +
                                 "\"Msg\":{{\"Type\":3," +
                                 "\"MediaId\":\"{3}\"," +
                                 "\"Content\":\"\"," +
@@ -313,7 +172,7 @@ namespace wxRobot.Services
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, DateTime.Now.Millisecond, DateTime.Now.Millisecond);
+                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, Utils.GetTimeSpan(), Utils.GetTimeSpan(), Utils.GetTimeSpan());
                 byte[] bytes = HttpServer.SendPostRequest(_sendmsgimg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
             }

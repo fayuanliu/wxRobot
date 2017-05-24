@@ -15,6 +15,7 @@ using wxRobot.Model.Dto;
 using wxRobot.Services;
 using wxRobot.Https;
 using wxRobot.Util.Utils;
+using Newtonsoft.Json;
 
 namespace wxRobot
 {
@@ -282,23 +283,53 @@ namespace wxRobot
                 return;
             }
             WXMesssage msg = new WXMesssage();
-            var data = message.FirstOrDefault();
             //发消息
-            foreach (var item in contact_all)
+            var sendMsg = message.Where(a => a.SendType == "文本").FirstOrDefault();
+            if (null != sendMsg)
             {
-                msg.From = _me.UserName;
-                msg.Msg = data.TxtContent;
-                msg.Readed = false;
-                msg.To = item.UserName;
-                msg.Type = 1;
-                msg.MediaId = "";
-                msg.Time = DateTime.Now;
-                if (item.NickName != "胡永乐" && item.NickName != "研发基地2")
+
+                foreach (var item in contact_all)
                 {
-                    item.UploadFile(data.TxtContent, msg);
+                    msg.From = _me.UserName;
+                    msg.Readed = false;
+                    msg.To = item.UserName;
+                    msg.Time = DateTime.Now;
+                    msg.Type = 1;
+                    msg.Msg = sendMsg.TxtContent;
+                    _me.SendMsg(msg);
                 }
             }
+            //发图片
+            var sendImage = message.Where(a => a.SendType == "图片").FirstOrDefault();
+            if (null != sendImage)
+            {
+                //先上传
+                WXServices wxServices = new WXServices();
+                var resultJson = wxServices.UploadImage(sendImage.TxtContent);
+                if (!string.IsNullOrEmpty(resultJson))
+                {
+                    JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;
+                    string mediaId = obj["MediaId"].ToString();
+                    if (!string.IsNullOrEmpty(mediaId))
+                    {
+                        foreach (var item in contact_all)
+                        {
+                            msg.From = _me.UserName;
+                            msg.Readed = false;
+                            msg.To = item.UserName;
+                            msg.Time = DateTime.Now;
+                            msg.MediaId = mediaId;
+                            _me.SendImage(msg);
+                        }
+                    }
+                }
+            }
+            //发视频
+            var sendVideo = message.Where(a => a.SendType == "视频").FirstOrDefault();
+            if (null != sendVideo)
+            {
 
+            }
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -330,7 +361,7 @@ namespace wxRobot
                 ofd.Multiselect = false;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    this.DataGridMessage.Rows[e.RowIndex].Cells[e.ColumnIndex].Value= ofd.FileName;
+                    this.DataGridMessage.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ofd.FileName;
                 }
             }
             if (e.RowIndex == 2 && e.ColumnIndex == 2)
