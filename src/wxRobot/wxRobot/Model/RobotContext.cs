@@ -26,7 +26,7 @@ namespace wxRobot.Model
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Configurations.AddFromAssembly(typeof(RobotContext).Assembly);
-            Database.SetInitializer(new DbInitializer(modelBuilder));
+            Database.SetInitializer(new DbInitalizerIfNotExists(modelBuilder));
         }
 
     }

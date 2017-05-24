@@ -17,9 +17,15 @@ namespace wxRobot.Services
         public OperResult IsAuth()
         {
             ServiceRecord record = null;
+            string key = string.Empty;
             using (RobotContext db = new RobotContext())
             {
                 record = db.Set<ServiceRecord>().FirstOrDefault();
+                var mc = db.Set<Machine>().FirstOrDefault();
+                if (mc != null)
+                {
+                    key = mc.MachineCode;
+                }
             }
             OperResult result = new OperResult();
             if (record == null)
@@ -32,7 +38,7 @@ namespace wxRobot.Services
                 result.Msg = "应用未授权";
                 result.Code = ResultCodeEnums.UnAuth;
             }
-            else if (int.Parse(GetAESInfo.Get(record.SurplusTotal)) <= 0)
+            else if (int.Parse(GetAESInfo.Get(record.SurplusTotal,key)) <= 0)
             {
                 result.Msg = "应用使用次数已用完";
                 result.Code = ResultCodeEnums.AuthExpire;
@@ -49,7 +55,7 @@ namespace wxRobot.Services
         /// 授权应用
         /// </summary>
         /// <returns></returns>
-        public OperResult Auth(string authCode,string mcCode)
+        public OperResult Auth(string authCode, string mcCode)
         {
             OperResult result = new OperResult();
             result.Code = ResultCodeEnums.warning;
@@ -63,12 +69,12 @@ namespace wxRobot.Services
                 return result;
             }
             int count = 0;
-            if (!int.TryParse(GetAESInfo.Get(authCode,mcCode),out count))
+            if (!int.TryParse(GetAESInfo.Get(authCode, mcCode), out count))
             {
                 result.Code = ResultCodeEnums.warning;
                 result.Msg = "无效的授权码，请输入有效的授权码！";
                 return result;
-            }                    
+            }
             ServiceRecord Record = new ServiceRecord();
             Record.IsAuth = true;
             Record.LastOperTime = DateTime.Now;

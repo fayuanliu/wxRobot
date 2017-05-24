@@ -47,7 +47,7 @@ namespace wxRobot
         {
             skinTabControl1.TabPages[1].Select();
             //扫码
-            GetLoginQRCode();
+           // GetLoginQRCode();
             BindMessageGrid();
         }
 
@@ -347,7 +347,7 @@ namespace wxRobot
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-            // IsAuth();
+             IsAuth();
         }
 
         private void DataGridMessage_CellContentClick(object sender, DataGridViewCellEventArgs e)
