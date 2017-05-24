@@ -167,7 +167,7 @@ namespace wxRobot.Services
                                 "\"ToUserName\":\"{5}\"," +
                                 "\"LocalID\":\"{6}\"," +
                                 "\"ClientMsgId\":\"{7}\"}}," +
-                                "\"Scene\":0}} ";
+                                "\"Scene\":2}} ";
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
