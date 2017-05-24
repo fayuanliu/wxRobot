@@ -268,6 +268,7 @@
             this.DataGridMessage.TitleBack = null;
             this.DataGridMessage.TitleBackColorBegin = System.Drawing.Color.White;
             this.DataGridMessage.TitleBackColorEnd = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(196)))), ((int)(((byte)(242)))));
+            this.DataGridMessage.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridMessage_CellContentClick);
             // 
             // Check
             // 

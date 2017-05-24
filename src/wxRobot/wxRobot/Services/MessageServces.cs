@@ -19,12 +19,12 @@ namespace wxRobot.Services
             list.Add(new MessageType()
             {
                 SendType = "图片",
-                TxtContent = "请输入图片所在电脑的磁盘路径包含文件名"
+                TxtContent = "点击选择文件!"
             });
             list.Add(new MessageType()
             {
                 SendType = "视频",
-                TxtContent = "请输入图片所在电脑的磁盘路径包含文件名"
+                TxtContent = "点击选择文件!"
             });
             return list;
 

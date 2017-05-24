@@ -318,5 +318,34 @@ namespace wxRobot
         {
             // IsAuth();
         }
+
+        private void DataGridMessage_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == 1 && e.ColumnIndex == 2)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Title = "选择图片文件";
+                ofd.ShowHelp = true;
+                ofd.Filter = "图片(*.jpg)|*.jpg|图片(*.jpge)|*.jpge|图片(*.gif)|*.gif";//过滤格式
+                ofd.Multiselect = false;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    this.DataGridMessage.Rows[e.RowIndex].Cells[e.ColumnIndex].Value= ofd.FileName;
+                }
+            }
+            if (e.RowIndex == 2 && e.ColumnIndex == 2)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Title = "选择视频文件";
+                ofd.ShowHelp = true;
+                ofd.Filter = "*.mp4|*.flv|*.f4v|*.rm|*.rmvb|*.wmv|*.avi|*.3gp";//过滤格式
+                ofd.Multiselect = false;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    this.DataGridMessage.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ofd.FileName;
+                }
+            }
+
+        }
     }
 }
