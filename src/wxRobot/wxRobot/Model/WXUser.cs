@@ -133,7 +133,7 @@ namespace wxRobot.Model
         public void UploadFile(string filePath, WXMesssage msg)
         {
             WXServices wxs = new WXServices();
-            wxs.UploadFile2(filePath, msg.From, msg.To);
+            wxs.UploadFile3(filePath, msg.From, msg.To);
         }
 
         public void SendVideo(WXMesssage msg)

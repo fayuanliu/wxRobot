@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -55,33 +56,33 @@ namespace wxRobot.Https
             }
         }
 
-        public static byte[] SendPostRequest(string url,string body,FileInfo file,string bodyEnd)
+        public static byte[] SendPostRequest(string url, string body, FileInfo file, string BoundStr)
         {
             try
             {
-                byte[] request_body = Encoding.UTF8.GetBytes(body);
-                byte[] request_bodyEnd = Encoding.UTF8.GetBytes(bodyEnd);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "post";
-                request.ContentLength = request_body.Length+file.Length+ request_bodyEnd.Length;
-                Stream request_stream = request.GetRequestStream();
-                request_stream.Write(request_body, 0, request_body.Length);
+                request.ContentType = "multipart/form-data;boundary=" + BoundStr.Substring(2);
+                var sw = new StreamWriter(request.GetRequestStream());
+                sw.Write(body);
+                sw.Flush();
+                //文件数据不能读为string，要直接读byte
                 FileStream fs = file.OpenRead();
                 byte[] buffer = new byte[1024];
                 int bytesRead = 0;
                 while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
                 {
-                    request_stream.Write(buffer, 0, bytesRead);
+                    sw.BaseStream.Write(buffer, 0, bytesRead);
                 }
+                sw.Write("\r\n" + BoundStr + "\r\n");
+                sw.Flush();
+                sw.Close();
                 fs.Close();
-                request_stream.Write(request_bodyEnd, 0, request_bodyEnd.Length);
-
                 if (CookiesContainer == null)
                 {
                     CookiesContainer = new CookieContainer();
                 }
                 request.CookieContainer = CookiesContainer;  //启用cookie
-
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream response_stream = response.GetResponseStream();
                 int count = (int)response.ContentLength;
@@ -139,6 +140,101 @@ namespace wxRobot.Https
             {
                 return null;
             }
+        }
+
+        public static byte[] SendPostRequest(string url, string body, string filetype, FileInfo fi)
+        {
+            Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
+            string filename = fi.Name;
+            long filesize = fi.Length;
+            var request = WebRequest.Create(url) as HttpWebRequest;
+            request.Accept = "*/*";
+            request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
+            request.Headers.Add("Accept-Encoding", "gzip,deflate");
+            request.ContentType = "multipart/form-data; boundary=----WebKitFormBoundaryq0powRpu8bd9gwTG";
+            if (url.Contains("wx2"))
+            {
+                request.Headers.Add("Origin", "https://wx2.qq.com");
+                request.Referer = "https://wx2.qq.com/?t=v2/index&lang=zh_CN";
+            }
+            else
+            {
+                request.Headers.Add("Origin", "https://wx.qq.com");
+                request.Referer = "https://wx.qq.com/?t=v2/index&lang=zh_CN";
+            }            
+            //request.UserAgent = USER_AGENT;
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+            request.Method = "POST";
+            request.ServicePoint.Expect100Continue = false;
+            string postbody = "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"id\"\r\n\r\n";
+            postbody += "WU_FILE_2\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"name\"\r\n\r\n";
+            postbody += filename + "\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"type\"\r\n\r\n";
+            postbody += filetype + "\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n";
+
+            postbody += DateTime.Now.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"size\"\r\n\r\n";
+            postbody += filesize + "\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
+            postbody += "pic\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
+            postbody += body + "\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"webwx_data_ticket\"\r\n\r\n";
+            postbody += webwx_data_ticket.Value + "\r\n";
+            postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
+            postbody += "Content-Disposition: form-data; name=\"filename\"; filename=\"" + filename + "\"\r\n";
+            postbody += "Content-Type: " + filetype + "\r\n\r\n";
+
+            try
+            {
+                var sw = new StreamWriter(request.GetRequestStream());
+                sw.Write(postbody); sw.Flush();
+
+                //文件数据不能读为string，要直接读byte
+                FileStream fs = fi.OpenRead();
+                byte[] buffer = new byte[1024];
+                int bytesRead = 0;
+                while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
+                {
+                    sw.BaseStream.Write(buffer, 0, bytesRead);
+                }
+                sw.Write("\r\n------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n");
+                if (CookiesContainer == null)
+                {
+                    CookiesContainer = new CookieContainer();
+                }
+                request.CookieContainer = CookiesContainer;  //启用cookie
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream response_stream = response.GetResponseStream();
+
+                int count = (int)response.ContentLength;
+                int offset = 0;
+                byte[] buf = new byte[count];
+                while (count > 0)  //读取返回数据
+                {
+                    int n = response_stream.Read(buf, offset, count);
+                    if (n == 0) break;
+                    count -= n;
+                    offset += n;
+                }
+                fs.Close();
+                return buf;
+            }
+            catch
+            {
+                return null;
+            }
+           
         }
 
         /// <summary>

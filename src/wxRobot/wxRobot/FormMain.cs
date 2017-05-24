@@ -14,6 +14,7 @@ using wxRobot.Model;
 using wxRobot.Model.Dto;
 using wxRobot.Services;
 using wxRobot.Https;
+using wxRobot.Util.Utils;
 
 namespace wxRobot
 {

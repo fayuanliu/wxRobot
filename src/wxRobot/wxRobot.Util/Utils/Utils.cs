@@ -39,5 +39,11 @@ namespace wxRobot.Util.Utils
                 return ms.ToArray();
             }
         }
+
+        public static string GetTimeSpan()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalMilliseconds).ToString();
+        }
     }
 }

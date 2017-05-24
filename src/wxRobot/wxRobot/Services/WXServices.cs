@@ -135,6 +135,22 @@ namespace wxRobot.Services
             }
         }
 
+
+
+
+        public bool UploadFile3(string path, string from, string to)
+        {
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            FileInfo file = new FileInfo(path);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
+            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", file);
+            string send_result = Encoding.UTF8.GetString(bytes);
+            return true;
+        }
+
         public bool UplpadImage(string path, string from, string to)
         {
             FileInfo file = new FileInfo(path);
@@ -218,8 +234,8 @@ namespace wxRobot.Services
             //这里是文件数据
 
             var bodyEnd = string.Format("\r\n------WebKitFormBoundarySSiYA5Ymp2LMopeV\r\n");
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), file, bodyEnd);
-            string send_result = Encoding.UTF8.GetString(bytes);
+            //byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), file, bodyEnd);
+           // string send_result = Encoding.UTF8.GetString(bytes);
             return true;
         }
 
@@ -249,7 +265,7 @@ namespace wxRobot.Services
             sb.Append("\r\n" + BoundStr + "\r\n");
             sb.Append("Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n");
 
-            sb.Append("Sat May 20 2017 17:40:17 GMT + 0800(ä¸­å½æ åæ¶é´)");
+            sb.Append("Sat May 20 2017 17:40:17 GMT + 0800(中国标准时间)");
             sb.Append("\r\n" + BoundStr + "\r\n");
             sb.Append("Content-Disposition: form-data; name=\"size\"\r\n\r\n");
             sb.Append(file.Length);
@@ -272,12 +288,12 @@ namespace wxRobot.Services
             sb.Append("\r\n" + BoundStr + "\r\n");
             sb.Append("Content-Disposition: form-data; name=\"filename\"; filename=\"default.jpg\"\r\n");
             sb.Append("Content-Type: image/jpeg\r\n");
-            #region 图片数据
-            byte[] PicBytes = Utils.ImageToBytesFromFilePath(path);
-            #endregion
-            byte[] TailBytes = Encoding.ASCII.GetBytes(sb.ToString());
-            UploadBuffers = Utils.ComposeArrays(TailBytes,PicBytes);
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, UploadBuffers, "multipart/form-data;boundary=" + BoundStr.Substring(2));
+            //#region 图片数据
+            //byte[] PicBytes = Utils.ImageToBytesFromFilePath(path);
+            //#endregion
+            //byte[] TailBytes = Encoding.UTF8.GetBytes(sb.ToString());
+            //UploadBuffers = Utils.ComposeArrays(TailBytes,PicBytes);
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(),file, BoundStr);
             string send_result = Encoding.UTF8.GetString(bytes);
         }
 
