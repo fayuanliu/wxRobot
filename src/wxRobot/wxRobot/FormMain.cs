@@ -47,7 +47,7 @@ namespace wxRobot
         {
             skinTabControl1.TabPages[1].Select();
             //扫码
-           // GetLoginQRCode();
+            GetLoginQRCode();
             BindMessageGrid();
         }
 

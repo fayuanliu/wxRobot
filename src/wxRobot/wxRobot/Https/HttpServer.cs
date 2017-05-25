@@ -114,7 +114,6 @@ namespace wxRobot.Https
             {
                 var sw = new StreamWriter(request.GetRequestStream());
                 sw.Write(postbody); sw.Flush();
-
                 //文件数据不能读为string，要直接读byte
                 FileStream fs = fi.OpenRead();
                 byte[] buffer = new byte[1024];
@@ -166,24 +165,20 @@ namespace wxRobot.Https
             try
             {
                 byte[] request_body = Encoding.UTF8.GetBytes(body);
-
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "post";
                 request.ContentLength = request_body.Length;
-
-                Stream request_stream = request.GetRequestStream();
-
-                request_stream.Write(request_body, 0, request_body.Length);
-                request_stream.Close();
                 CookieContainer cookies = new CookieContainer();
                 if (CookiesContainer == null)
                 {
                     CookiesContainer = new CookieContainer();
                 }
                 request.CookieContainer = CookiesContainer;  //启用cookie
+                request.Method = "post";
+                Stream request_stream = request.GetRequestStream();
+                request_stream.Write(request_body, 0, request_body.Length);
+                request_stream.Close();
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream response_stream = response.GetResponseStream();
-
                 int count = (int)response.ContentLength;
                 int offset = 0;
                 byte[] buf = new byte[count];
