@@ -201,7 +201,7 @@
             this.skinTabControl1.PageImagePosition = CCWin.SkinControl.SkinTabControl.ePageImagePosition.Left;
             this.skinTabControl1.PageNorml = null;
             this.skinTabControl1.SelectedIndex = 0;
-            this.skinTabControl1.Size = new System.Drawing.Size(517, 374);
+            this.skinTabControl1.Size = new System.Drawing.Size(517, 334);
             this.skinTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.skinTabControl1.TabIndex = 13;
             // 
@@ -212,7 +212,7 @@
             this.skinTabPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage1.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage1.Name = "skinTabPage1";
-            this.skinTabPage1.Size = new System.Drawing.Size(517, 338);
+            this.skinTabPage1.Size = new System.Drawing.Size(517, 298);
             this.skinTabPage1.TabIndex = 0;
             this.skinTabPage1.TabItemImage = null;
             this.skinTabPage1.Text = "消息设置";
@@ -263,7 +263,7 @@
             this.DataGridMessage.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.DataGridMessage.RowTemplate.Height = 23;
             this.DataGridMessage.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DataGridMessage.Size = new System.Drawing.Size(511, 335);
+            this.DataGridMessage.Size = new System.Drawing.Size(511, 293);
             this.DataGridMessage.TabIndex = 2;
             this.DataGridMessage.TitleBack = null;
             this.DataGridMessage.TitleBackColorBegin = System.Drawing.Color.White;
@@ -302,7 +302,7 @@
             this.skinTabPage2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage2.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage2.Name = "skinTabPage2";
-            this.skinTabPage2.Size = new System.Drawing.Size(517, 338);
+            this.skinTabPage2.Size = new System.Drawing.Size(517, 250);
             this.skinTabPage2.TabIndex = 1;
             this.skinTabPage2.TabItemImage = null;
             this.skinTabPage2.Text = "用户信息";
@@ -388,7 +388,7 @@
             this.skinTabPage3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage3.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage3.Name = "skinTabPage3";
-            this.skinTabPage3.Size = new System.Drawing.Size(517, 338);
+            this.skinTabPage3.Size = new System.Drawing.Size(517, 250);
             this.skinTabPage3.TabIndex = 2;
             this.skinTabPage3.TabItemImage = null;
             this.skinTabPage3.Text = "好友列表";
@@ -410,7 +410,7 @@
             this.skinTabPage4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.skinTabPage4.Location = new System.Drawing.Point(0, 36);
             this.skinTabPage4.Name = "skinTabPage4";
-            this.skinTabPage4.Size = new System.Drawing.Size(517, 338);
+            this.skinTabPage4.Size = new System.Drawing.Size(517, 250);
             this.skinTabPage4.TabIndex = 3;
             this.skinTabPage4.TabItemImage = null;
             this.skinTabPage4.Text = "关于";

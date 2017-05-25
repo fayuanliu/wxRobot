@@ -347,7 +347,7 @@ namespace wxRobot
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-             IsAuth();
+             //IsAuth();
         }
 
         private void DataGridMessage_CellContentClick(object sender, DataGridViewCellEventArgs e)

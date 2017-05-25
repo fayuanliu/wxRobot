@@ -68,6 +68,7 @@ namespace wxRobot.Services
             string pass_ticket = Encoding.UTF8.GetString(bytes);
             Pass_Ticket = pass_ticket.Split(new string[] { "pass_ticket" }, StringSplitOptions.None)[1].TrimStart('>').TrimEnd('<', '/');
             SKey = pass_ticket.Split(new string[] { "skey" }, StringSplitOptions.None)[1].TrimStart('>').TrimEnd('<', '/');
+            
         }
     }
 }
