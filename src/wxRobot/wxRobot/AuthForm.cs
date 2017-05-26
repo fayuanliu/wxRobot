@@ -48,7 +48,7 @@ namespace wxRobot
 
         private void TxtMessage_Enter(object sender, EventArgs e)
         {
-            if (this.txtAuthCode.Text == "请输入你要发送的信息")
+            if (this.txtAuthCode.Text == "请输入代理商给的授权码")
             {
                 this.txtAuthCode.Text = string.Empty;
                 this.txtAuthCode.ForeColor = Color.Black;
