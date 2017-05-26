@@ -122,6 +122,9 @@
             this.txtAuthCode.WordWrap = true;
             this.txtAuthCode.Enter += new System.EventHandler(this.TxtMessage_Enter);
             this.txtAuthCode.Leave += new System.EventHandler(this.TxtMessage_Leave);
+            this.txtAuthCode.MouseEnter += new System.EventHandler(this.TxtMessage_Enter);
+            this.txtAuthCode.MouseLeave += new System.EventHandler(this.TxtMessage_Leave);
+            this.txtAuthCode.MouseUp += new System.Windows.Forms.MouseEventHandler(this.txtAuthCode_MouseUp);
             // 
             // skinLabel5
             // 
@@ -209,6 +212,7 @@
             this.lblMCCode.SkinTxt.Font = new System.Drawing.Font("微软雅黑", 9.75F);
             this.lblMCCode.SkinTxt.Location = new System.Drawing.Point(5, 5);
             this.lblMCCode.SkinTxt.Name = "BaseText";
+            this.lblMCCode.SkinTxt.ReadOnly = true;
             this.lblMCCode.SkinTxt.Size = new System.Drawing.Size(302, 18);
             this.lblMCCode.SkinTxt.TabIndex = 0;
             this.lblMCCode.SkinTxt.Text = "0000-0000-0000-0000-0000";

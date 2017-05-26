@@ -34,14 +34,15 @@ namespace wxRobot
                 if (result.Code!= ResultCodeEnums.Auth)
                 {
                     MessageBox.Show(result.Msg);
-                    return;
+                    this.DialogResult = DialogResult.OK;
+                    Close();
                 }
             }
         }
 
         private void AuthForm_Load(object sender, EventArgs e)
         {
-            this.lblMCCode.Text = Register.GetMoAddress();
+            this.lblMCCode.Text =Guid.NewGuid().ToString("n");
             SetSendContent();
         }
 
@@ -71,6 +72,11 @@ namespace wxRobot
                 this.txtAuthCode.Text = string.Empty;
                 this.txtAuthCode.ForeColor = Color.Black;
             }
+        }
+
+        private void txtAuthCode_MouseUp(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }

@@ -47,7 +47,7 @@ namespace wxRobot
         {
             skinTabControl1.TabPages[1].Select();
             //扫码
-            GetLoginQRCode();
+           // GetLoginQRCode();
             BindMessageGrid();
         }
 
@@ -61,7 +61,19 @@ namespace wxRobot
             }
             else if (OperResult.Code == ResultCodeEnums.AuthExpire)
             {
-                MessageBox.Show(OperResult.Msg);
+                var result = MessageBox.Show(OperResult.Msg + "，是否现在进行授权", "系统提示", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    AuthForm authForm = new AuthForm();
+                    if (authForm.ShowDialog() == DialogResult.OK)
+                    {
+                        GetLoginQRCode();
+                    }
+                }
+                else
+                {
+                    Application.Exit();
+                }
             }
             else if (OperResult.Code == ResultCodeEnums.UnAuth)
             {
@@ -69,62 +81,16 @@ namespace wxRobot
                 if (result == DialogResult.Yes)
                 {
                     AuthForm authForm = new AuthForm();
-                    authForm.ShowDialog();
+                    if (authForm.ShowDialog() == DialogResult.OK)
+                    {
+                        GetLoginQRCode();
+                    }
                 }
                 else
                 {
                     Application.Exit();
                 }
             }
-        }
-
-        private void JudgedImage(OpenFileDialog fileDialog, string extension)
-        {
-            string[] str = new string[] { ".gif", ".jpge", ".jpg" };
-            if (!str.Contains(extension))
-            {
-                MessageBox.Show("仅能上传gif,jpge,jpg格式的图片！");
-            }
-            else
-            {
-                //获取用户选择的文件，并判断文件大小不能超过2M，fileInfo.Length是以字节为单位的
-                FileInfo fileInfo = new FileInfo(fileDialog.FileName);
-                if (fileInfo.Length > 1024 * 2 * 1000)
-                {
-                    MessageBox.Show("上传的图片不能大于2M");
-                }
-                else
-                {
-                    //在这里就可以写获取到正确文件后的代码了
-                }
-            }
-        }
-
-        private void JudgedVideo(OpenFileDialog fileDialog, string extension)
-        {
-            string[] str = new string[] { ".mp4", ".flv", ".f4v", ".rm", ".rmvb", ".wmv", ".avi", ".3gp" };
-            if (!str.Contains(extension))
-            {
-                MessageBox.Show("仅能上传mp4,flv,f4v,rm,rmvb,wmv,avi,3gp格式的视频！");
-            }
-            else
-            {
-                //获取用户选择的文件，并判断文件大小不能超过20M，fileInfo.Length是以字节为单位的
-                FileInfo fileInfo = new FileInfo(fileDialog.FileName);
-                if (fileInfo.Length > 1024 * 2 * 1000 * 10)
-                {
-                    MessageBox.Show("上传的图片不能大于2M");
-                }
-                else
-                {
-                    //在这里就可以写获取到正确文件后的代码了
-                }
-            }
-        }
-
-        private void btnEnter_Click(object sender, EventArgs e)
-        {
-
         }
 
         public void BindMessageGrid()
@@ -149,7 +115,8 @@ namespace wxRobot
                     {
                         picQRCode.Image = qrcode;
                     });
-
+                    ServiceRecordSvc recordSvc = new ServiceRecordSvc();
+                    recordSvc.SetRecord();
                     object login_result = null;
                     while (true)  //循环判断手机扫面二维码结果
                     {
@@ -297,6 +264,7 @@ namespace wxRobot
                     msg.Type = 1;
                     msg.Msg = sendMsg.TxtContent;
                     _me.SendMsg(msg);
+                    outPost(item.NickName, sendMsg.SendType);
                 }
             }
             //发图片
@@ -320,6 +288,7 @@ namespace wxRobot
                             msg.Time = DateTime.Now;
                             msg.MediaId = mediaId;
                             _me.SendImage(msg);
+                            outPost(item.NickName, sendImage.SendType);
                         }
                     }
                 }
@@ -347,7 +316,7 @@ namespace wxRobot
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-             //IsAuth();
+             IsAuth();
         }
 
         private void DataGridMessage_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -376,7 +345,12 @@ namespace wxRobot
                     this.DataGridMessage.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = ofd.FileName;
                 }
             }
+        }
 
+        private void outPost(string toUSerName,string msgType)
+        {
+            var txt = txtLog.Text;
+            txtLog.Text = string.Format("{0}\t已发{1}信息给{2}\r\n{3}", DateTime.Now.ToString(), toUSerName, msgType, txt);
         }
     }
 }

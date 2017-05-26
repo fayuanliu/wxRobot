@@ -17,7 +17,15 @@ namespace wxRobot.Services
             mc.MachineCode = code;
             using (RobotContext db = new RobotContext())
             {
-                db.Set<Machine>().Add(mc);
+               var data= db.Set<Machine>().FirstOrDefault();
+                if (null == data)
+                {
+                    db.Set<Machine>().Add(mc);
+                }
+                else
+                {
+                    data.MachineCode = code;
+                }
                 db.SaveChanges();
             }
         }

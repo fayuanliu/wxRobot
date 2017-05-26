@@ -38,7 +38,7 @@ namespace wxRobot.Services
                 result.Msg = "应用未授权";
                 result.Code = ResultCodeEnums.UnAuth;
             }
-            else if (int.Parse(GetAESInfo.Get(record.SurplusTotal,key)) <= 0)
+            else if (int.Parse(GetAESInfo.Get(record.SurplusTotal, key)) <= 0)
             {
                 result.Msg = "应用使用次数已用完";
                 result.Code = ResultCodeEnums.AuthExpire;
@@ -82,7 +82,18 @@ namespace wxRobot.Services
             Record.Total = authCode;
             using (RobotContext db = new RobotContext())
             {
-                db.Set<ServiceRecord>().Add(Record);
+                var data = db.Set<ServiceRecord>().Where(a => true).FirstOrDefault();
+                if (null == data)
+                {
+                    db.Set<ServiceRecord>().Add(Record);
+                }
+                else
+                {
+                    Record.IsAuth = true;
+                    Record.LastOperTime = DateTime.Now;
+                    Record.SurplusTotal = authCode;
+                    Record.Total = authCode;
+                }
                 int res = db.SaveChanges();
                 if (res > 0)
                 {
