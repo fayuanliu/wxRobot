@@ -166,6 +166,7 @@
   <ItemGroup>
     <Content Include="Resources\default.jpg" />
     <Content Include="Resources\male.bmp" />
+    <Content Include="Resources\wxRobot.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\wxRobot.Util\wxRobot.Util.csproj">

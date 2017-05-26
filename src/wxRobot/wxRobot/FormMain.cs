@@ -271,6 +271,11 @@ namespace wxRobot
             var sendImage = message.Where(a => a.SendType == "图片").FirstOrDefault();
             if (null != sendImage)
             {
+                if (!File.Exists(sendImage.TxtContent))
+                {
+                    MessageBox.Show("文件不存在，请选择好文件！");
+                    return;
+                }
                 //先上传
                 WXServices wxServices = new WXServices();
                 var resultJson = wxServices.UploadImage(sendImage.TxtContent);
