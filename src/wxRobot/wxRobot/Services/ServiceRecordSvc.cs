@@ -89,10 +89,10 @@ namespace wxRobot.Services
                 }
                 else
                 {
-                    Record.IsAuth = true;
-                    Record.LastOperTime = DateTime.Now;
-                    Record.SurplusTotal = authCode;
-                    Record.Total = authCode;
+                    data.IsAuth = true;
+                    data.LastOperTime = DateTime.Now;
+                    data.SurplusTotal = authCode;
+                    data.Total = authCode;
                 }
                 int res = db.SaveChanges();
                 if (res > 0)

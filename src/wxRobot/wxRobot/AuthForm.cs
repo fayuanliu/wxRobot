@@ -31,11 +31,15 @@ namespace wxRobot
             {
                 ServiceRecordSvc recordSvc = new ServiceRecordSvc();
                 OperResult result = recordSvc.Auth(this.txtAuthCode.Text, this.lblMCCode.Text);
-                if (result.Code!= ResultCodeEnums.Auth)
+                if (result.Code== ResultCodeEnums.Auth)
                 {
                     MessageBox.Show(result.Msg);
                     this.DialogResult = DialogResult.OK;
                     Close();
+                }
+                else
+                {
+                    MessageBox.Show(result.Msg);
                 }
             }
         }
