@@ -228,6 +228,7 @@ namespace wxRobot
 
         private void skinButton1_Click(object sender, EventArgs e)
         {
+            this.skinButton1.Enabled = false;
             List<MessageType> message = new List<MessageType>();
             int count = DataGridMessage.Rows.Count;
             for (int i = 0; i < count; i++)
@@ -304,6 +305,7 @@ namespace wxRobot
             {
 
             }
+            this.skinButton1.Enabled = true;
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
