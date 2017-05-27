@@ -29,6 +29,7 @@ namespace wxRobot.Https
             Api.Add("_sendmsgimg", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json");
             //发送视频消息
             Api.Add("_sendvideomsg", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json");
+            Api.Add("_webwxgetmsgimg", "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?");
         }
 
         public void SetWX2()
@@ -50,6 +51,7 @@ namespace wxRobot.Https
             Api.Add("_sendmsgimg", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsgimg?fun=async&f=json");
             //发送视频消息
             Api.Add("_sendvideomsg", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json");
+            Api.Add("_webwxgetmsgimg", "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?");
         }
 
         public void InitApi(string url)

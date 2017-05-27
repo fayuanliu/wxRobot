@@ -303,7 +303,31 @@ namespace wxRobot
             var sendVideo = message.Where(a => a.SendType == "视频").FirstOrDefault();
             if (null != sendVideo)
             {
-
+                if (!File.Exists(sendVideo.TxtContent))
+                {
+                    MessageBox.Show("文件不存在，请选择好文件！");
+                    return;
+                }
+                WXServices wxServices = new WXServices();
+                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent);
+                if (!string.IsNullOrEmpty(resultJson))
+                {
+                    JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;
+                    string mediaId = obj["MediaId"].ToString();
+                    if (!string.IsNullOrEmpty(mediaId))
+                    {
+                        foreach (var item in contact_all)
+                        {
+                            msg.From = _me.UserName;
+                            msg.Readed = false;
+                            msg.To = item.UserName;
+                            msg.Time = DateTime.Now;
+                            msg.MediaId = mediaId;
+                            _me.SendVideo(msg);
+                            outPost(item.NickName, sendVideo.SendType);
+                        }
+                    }
+                }
             }
             this.skinButton1.Enabled = true;
         }
@@ -345,7 +369,7 @@ namespace wxRobot
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Title = "选择视频文件";
                 ofd.ShowHelp = true;
-                ofd.Filter = "*.mp4|*.flv|*.f4v|*.rm|*.rmvb|*.wmv|*.avi|*.3gp";//过滤格式
+                //ofd.Filter = "视频(*.mp4)|视频(*.flv)|视频(*.f4v)|视频(*.rm)|视频(*.rmvb)|视频(*.wmv)|视频(*.avi)|视频(*.3gp)";//过滤格式
                 ofd.Multiselect = false;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {

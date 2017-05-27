@@ -40,19 +40,21 @@ namespace wxRobot.Services
         /// </summary>
         //private static string _sendvideomsg="https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendvideomsg?fun=async&f=json";
         private string _sendvideomsg = HttpApi.Api["_sendvideomsg"].ToString();
+        // private string _webwxgetmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgID=7328271055096700186&skey=%40crypt_9b7cdeb2_e9026299b97c735745e082c98f1340e5&type=slave";
+        private string _webwxgetmsgimg = HttpApi.Api["_webwxgetmsgimg"].ToString();
         /// <summary>
         /// 微信初始化
         /// </summary>
         /// <returns></returns>
         public JObject WxInit()
         {
-            string init_json = "{{\"BaseRequest\":{{\"Uin\":\"{0}\",\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e1615250492\"}}}}";
+            string init_json = "{{\"BaseRequest\":{{\"Uin\":\"{0}\",\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}}}}";
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
 
             if (sid != null && uin != null)
             {
-                init_json = string.Format(init_json, uin.Value, sid.Value, LoginService.SKey);
+                init_json = string.Format(init_json, uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
                 byte[] bytes = HttpServer.SendPostRequest(_init_url + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, init_json);
                 string init_str = Encoding.UTF8.GetString(bytes);
 
@@ -81,7 +83,7 @@ namespace wxRobot.Services
         {
             string msg_json = "{{" +
            "\"BaseRequest\":{{" +
-               "\"DeviceID\" : \"e441551176\"," +
+               "\"DeviceID\" : \"e{10}\"," +
                "\"Sid\" : \"{0}\"," +
                "\"Skey\" : \"{6}\"," +
                "\"Uin\" : \"{1}\"" +
@@ -102,7 +104,7 @@ namespace wxRobot.Services
 
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, sid.Value, uin.Value, msg, from, to, type, LoginService.SKey, DateTime.Now.Millisecond, DateTime.Now.Millisecond, DateTime.Now.Millisecond);
+                msg_json = string.Format(msg_json, sid.Value, uin.Value, msg, from, to, type, LoginService.SKey, DateTime.Now.Millisecond, DateTime.Now.Millisecond, DateTime.Now.Millisecond, Utils.GetTimeSpan());
 
                 byte[] bytes = HttpServer.SendPostRequest(_sendmsg_url + sid.Value + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
 
@@ -113,7 +115,7 @@ namespace wxRobot.Services
 
         public void SendVideo(string MediaId, string from, string to)
         {
-            string msg_json = "{{\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e441551176\"}}," +
+            string msg_json = "{{\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{8}\"}}," +
                  "\"Msg\":{{" +
                  "\"Type\":43," +
                  "\"MediaId\":\"{3}\"," +
@@ -128,11 +130,23 @@ namespace wxRobot.Services
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, DateTime.Now.Millisecond, DateTime.Now.Millisecond);
+                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, DateTime.Now.Millisecond, DateTime.Now.Millisecond, Utils.GetTimeSpan());
 
                 byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
+                JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
+                string MsgID = obj["MsgID"].ToString();
+                if (string.IsNullOrEmpty(MsgID))
+                {
+                    string url = string.Format("{0}&MsgID={1}&skey={2}&type=slave", _webwxgetmsgimg,MsgID,LoginService.SKey);
+                    byte[] bytesvideo = HttpServer.SendPostRequest(url, string.Empty);
+                }
             }
+        }
+
+        public void Sendvideomsg()
+        {
+
         }
 
 
@@ -146,7 +160,24 @@ namespace wxRobot.Services
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
             sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", file);
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", "image/jpeg", file);
+            string send_result = string.Empty;
+            if (bytes != null)
+            {
+                send_result = Encoding.UTF8.GetString(bytes);
+            }
+            return send_result;
+        }
+
+        public string UploadVideo(string path)
+        {
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            FileInfo file = new FileInfo(path);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
+            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "video/mp4", "application/octet-stream", file);
             string send_result = string.Empty;
             if (bytes != null)
             {

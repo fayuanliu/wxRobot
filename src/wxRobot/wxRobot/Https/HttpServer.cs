@@ -57,7 +57,7 @@ namespace wxRobot.Https
             }
         }
 
-        public static byte[] SendPostRequest(string url, string body, string filetype, FileInfo fi)
+        public static byte[] SendPostRequest(string url, string body, string filetype,string ContentType, FileInfo fi)
         {
             Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
             string filename = fi.Name;
@@ -108,7 +108,7 @@ namespace wxRobot.Https
             postbody += webwx_data_ticket.Value + "\r\n";
             postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
             postbody += "Content-Disposition: form-data; name=\"filename\"; filename=\"" + filename + "\"\r\n";
-            postbody += "Content-Type: " + filetype + "\r\n\r\n";
+            postbody += "Content-Type: " + ContentType + "\r\n\r\n";
 
             try
             {

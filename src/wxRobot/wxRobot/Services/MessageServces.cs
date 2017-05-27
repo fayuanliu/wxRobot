@@ -21,11 +21,11 @@ namespace wxRobot.Services
                 SendType = "图片",
                 TxtContent = "点击选择文件!"
             });
-            //list.Add(new MessageType()
-            //{
-            //    SendType = "视频",
-            //    TxtContent = "点击选择文件!"
-            //});
+            list.Add(new MessageType()
+            {
+                SendType = "视频",
+                TxtContent = "点击选择文件!"
+            });
             return list;
 
         }
