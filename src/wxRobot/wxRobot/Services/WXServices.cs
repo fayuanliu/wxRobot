@@ -132,11 +132,11 @@ namespace wxRobot.Services
             {
                 msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, DateTime.Now.Millisecond, DateTime.Now.Millisecond, Utils.GetTimeSpan());
 
-                byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg + "&lang=zh_CN&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
+                byte[] bytes = HttpServer.SendPostRequestV2(_sendvideomsg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
                 JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
                 string MsgID = obj["MsgID"].ToString();
-                if (string.IsNullOrEmpty(MsgID))
+                if (!string.IsNullOrEmpty(MsgID))
                 {
                     string url = string.Format("{0}&MsgID={1}&skey={2}&type=slave", _webwxgetmsgimg,MsgID,LoginService.SKey);
                     byte[] bytesvideo = HttpServer.SendPostRequest(url, string.Empty);
@@ -160,7 +160,7 @@ namespace wxRobot.Services
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
             sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", "image/jpeg", file);
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", "image/jpeg","pic", file);
             string send_result = string.Empty;
             if (bytes != null)
             {
@@ -177,7 +177,7 @@ namespace wxRobot.Services
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
             sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "video/mp4", "application/octet-stream", file);
+            byte[] bytes = HttpServer.SendPostRequestByVideo(_uplpadFileUrl, sb.ToString(), file);
             string send_result = string.Empty;
             if (bytes != null)
             {
