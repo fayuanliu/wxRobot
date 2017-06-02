@@ -210,7 +210,7 @@ namespace wxRobot.Https
             postbody += "undefined\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"filename\"; filename=\"" + filename + "\"\r\n";
-            postbody += "Content-Type: application/octet-stream\r\n\r\n";
+            postbody += "Content-Type: video/mp4\r\n\r\n";
 
             FileStream fs = fi.OpenRead();
             try
@@ -229,7 +229,6 @@ namespace wxRobot.Https
                 sw.Close();
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream response_stream = response.GetResponseStream();
-
                 int count = (int)response.ContentLength;
                 int offset = 0;
                 byte[] buf = new byte[count];
@@ -240,7 +239,6 @@ namespace wxRobot.Https
                     count -= n;
                     offset += n;
                 }
-
                 response_stream.Close();
                 return buf;
             }

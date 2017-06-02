@@ -47,7 +47,7 @@ namespace wxRobot
         {
             skinTabControl1.TabPages[1].Select();
             //扫码
-           // GetLoginQRCode();
+            GetLoginQRCode();
             BindMessageGrid();
         }
 
@@ -115,8 +115,8 @@ namespace wxRobot
                     {
                         picQRCode.Image = qrcode;
                     });
-                    ServiceRecordSvc recordSvc = new ServiceRecordSvc();
-                    recordSvc.SetRecord();
+                    //ServiceRecordSvc recordSvc = new ServiceRecordSvc();
+                    //recordSvc.SetRecord();
                     object login_result = null;
                     while (true)  //循环判断手机扫面二维码结果
                     {
@@ -347,7 +347,7 @@ namespace wxRobot
 
         private void FormMain_Shown(object sender, EventArgs e)
         {
-             IsAuth();
+            // IsAuth();
         }
 
         private void DataGridMessage_CellContentClick(object sender, DataGridViewCellEventArgs e)
