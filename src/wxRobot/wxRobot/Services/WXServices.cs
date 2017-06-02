@@ -115,24 +115,30 @@ namespace wxRobot.Services
 
         public void SendVideo(string MediaId, string from, string to)
         {
-            string msg_json = "{{\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{8}\"}}," +
-                 "\"Msg\":{{" +
-                 "\"Type\":43," +
-                 "\"MediaId\":\"{3}\"," +
-                 "\"Content\":\"\"," +
-                 "\"FromUserName\":\"{4}\"," +
-                 "\"ToUserName\":\"{5}\"," +
-                 "\"LocalID\":\"{6}\"," +
-                 "\"ClientMsgId\":\"{7}\"}}," +
-                 "\"Scene\":0" +
-                 "}}";
+            string msg_json = "{{" +
+          "\"BaseRequest\":{{" +
+              "\"DeviceID\" : \"e{0}\"," +
+              "\"Sid\" : \"{1}\"," +
+              "\"Skey\" : \"{2}\"," +
+              "\"Uin\" : \"{3}\"" +
+          "}}," +
+          "\"Msg\" : {{" +
+              "\"ClientMsgId\" : {4}," +
+               "\"MediaId\":\"{5}\"," +
+              "\"Content\" : \"{6}\"," +
+              "\"FromUserName\" : \"{7}\"," +
+              "\"LocalID\" : {8}," +
+              "\"ToUserName\" : \"{9}\"," +
+              "\"Type\" : 43" +
+          "}}," +
+          "\"rr\" : {10}" +
+          "}}";
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, uin.Value, sid.Value, LoginService.SKey, MediaId, from, to, DateTime.Now.Millisecond, DateTime.Now.Millisecond, Utils.GetTimeSpan());
-
-                byte[] bytes = HttpServer.SendPostRequestV2(_sendvideomsg, msg_json);
+                msg_json = string.Format(msg_json,Utils.GetTimeSpan(),sid.Value,LoginService.SKey,uin.Value,Utils.GetTimeSpan(),MediaId,string.Empty,from,Utils.GetTimeSpan(),to,Utils.GetTimeSpan());
+                byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
                 JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
                 string MsgID = obj["MsgID"].ToString();
@@ -143,14 +149,6 @@ namespace wxRobot.Services
                 }
             }
         }
-
-        public void Sendvideomsg()
-        {
-
-        }
-
-
-
 
         public string UploadImage(string path)
         {

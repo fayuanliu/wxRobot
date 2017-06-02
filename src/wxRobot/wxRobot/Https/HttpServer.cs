@@ -57,7 +57,7 @@ namespace wxRobot.Https
             }
         }
 
-        public static byte[] SendPostRequest(string url, string body, string filetype,string ContentType, string mediatype, FileInfo fi)
+        public static byte[] SendPostRequest(string url, string body, string filetype, string ContentType, string mediatype, FileInfo fi)
         {
             Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
             string filename = fi.Name;
@@ -104,7 +104,7 @@ namespace wxRobot.Https
             postbody += filesize + "\r\n";
             postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
             postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
-            postbody += ""+ mediatype + "\r\n";
+            postbody += "" + mediatype + "\r\n";
             postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
             postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
             postbody += body + "\r\n";
@@ -175,56 +175,56 @@ namespace wxRobot.Https
             }
             request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
             request.Headers.Add("Accept-Encoding", "gzip,deflate");
-            request.ContentType = "multipart/form-data; boundary=----WebKitFormBoundaryBYwQxyZI1AKKWAow";
+            request.ContentType = "multipart/form-data; boundary=----WebKitFormBoundaryLcLGZdwXomd67JVF";
 
             request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
             request.Method = "POST";
             request.ServicePoint.Expect100Continue = false;
-            string postbody = "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            string postbody = "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"id\"\r\n\r\n";
             postbody += "WU_FILE_2\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"name\"\r\n\r\n";
             postbody += filename + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"type\"\r\n\r\n";
             postbody += "video/mp4\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n";
 
             postbody += DateTime.Now.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"size\"\r\n\r\n";
             postbody += filesize + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
-            postbody += "video/mp4\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "video\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
             postbody += body + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"webwx_data_ticket\"\r\n\r\n";
             postbody += webwx_data_ticket.Value + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"pass_ticket\"\r\n\r\n";
             postbody += "undefined\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"filename\"; filename=\"" + filename + "\"\r\n";
-            postbody += "Content-Type:video/mp4\r\n\r\n";
+            postbody += "Content-Type: application/octet-stream\r\n\r\n";
 
+            FileStream fs = fi.OpenRead();
             try
             {
                 var sw = new StreamWriter(request.GetRequestStream());
                 sw.Write(postbody); sw.Flush();
                 //文件数据不能读为string，要直接读byte
-                FileStream fs = fi.OpenRead();
                 byte[] buffer = new byte[1024];
                 int bytesRead = 0;
                 while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
                 {
                     sw.BaseStream.Write(buffer, 0, bytesRead);
                 }
-                sw.Write("\r\n------WebKitFormBoundaryBYwQxyZI1AKKWAow--\r\n");
+                sw.Write("\r\n------WebKitFormBoundaryLcLGZdwXomd67JVF--\r\n");
                 sw.Flush();
                 sw.Close();
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -240,13 +240,17 @@ namespace wxRobot.Https
                     count -= n;
                     offset += n;
                 }
-                fs.Close();
+
                 response_stream.Close();
                 return buf;
             }
             catch
             {
                 return null;
+            }
+            finally
+            {
+                fs.Close();
             }
 
         }
@@ -262,7 +266,7 @@ namespace wxRobot.Https
                 {
                     request.Host = "wx2.qq.com";
                     request.Referer = "https://wx2.qq.com/";
-                    request.Headers.Add("Origin","https://wx2.qq.com");
+                    request.Headers.Add("Origin", "https://wx2.qq.com");
                 }
                 else
                 {
@@ -273,11 +277,18 @@ namespace wxRobot.Https
                 request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
                 request.Headers.Add("Accept-Encoding", "gzip,deflate");
                 request.ContentLength = request_body.Length;
-                CookieContainer cookies = new CookieContainer();
                 if (CookiesContainer == null)
                 {
                     CookiesContainer = new CookieContainer();
                 }
+                //CookiesContainer.Add(SetCookie("webwxuvid", "9f8649ff49ca74603be0817d919f5604aec1e08d7cfa82e07c6869b9e9bc73dfa0cb430e88aae522a3495026f69ee603", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("login_frequency", "1", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("last_wxuin", "2091353982", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("pgv_si", "s8194194432", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("MM_WX_NOTIFY_STATE", "1", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("MM_WX_SOUND_STATE", "1", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("wxloadtime", "1496286043_expired", ".wx.qq.com"));
+                //CookiesContainer.Add(SetCookie("wxpluginkey", "1496278802", ".wx.qq.com"));
                 request.CookieContainer = CookiesContainer;  //启用cookie
                 request.Method = "post";
                 Stream request_stream = request.GetRequestStream();
@@ -298,7 +309,7 @@ namespace wxRobot.Https
                 response_stream.Close();
                 return buf;
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -366,6 +377,16 @@ namespace wxRobot.Https
             return null;
         }
 
+        public static Cookie SetCookie(string name, string value, string domain)
+        {
+            Cookie cookie = new Cookie();
+            cookie.Domain = domain;
+            cookie.Name = name;
+            cookie.Value = value;
+            cookie.Expires.AddDays(1);
+            return cookie;
+        }
+
         private static List<Cookie> GetAllCookies(CookieContainer cc)
         {
             List<Cookie> lstCookies = new List<Cookie>();
@@ -384,5 +405,6 @@ namespace wxRobot.Https
             }
             return lstCookies;
         }
+
     }
 }
