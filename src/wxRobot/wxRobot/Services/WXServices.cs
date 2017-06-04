@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using wxRobot.Https;
+using wxRobot.Model.Dto;
 using wxRobot.Util.Utils;
 
 namespace wxRobot.Services
@@ -42,6 +43,9 @@ namespace wxRobot.Services
         private string _sendvideomsg = HttpApi.Api["_sendvideomsg"].ToString();
         // private string _webwxgetmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgID=7328271055096700186&skey=%40crypt_9b7cdeb2_e9026299b97c735745e082c98f1340e5&type=slave";
         private string _webwxgetmsgimg = HttpApi.Api["_webwxgetmsgimg"].ToString();
+        //发送文件
+       // private string _webwxsendappmsg = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN";
+        private string _webwxsendappmsg = HttpApi.Api["_webwxsendappmsg"].ToString();
         /// <summary>
         /// 微信初始化
         /// </summary>
@@ -137,14 +141,14 @@ namespace wxRobot.Services
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json,Utils.GetTimeSpan(),sid.Value,LoginService.SKey,uin.Value,Utils.GetTimeSpan(),MediaId,string.Empty,from,Utils.GetTimeSpan(),to,Utils.GetTimeSpan());
+                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), MediaId, string.Empty, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan());
                 byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
                 JObject obj = JsonConvert.DeserializeObject(send_result) as JObject;
                 string MsgID = obj["MsgID"].ToString();
                 if (!string.IsNullOrEmpty(MsgID))
                 {
-                    string url = string.Format("{0}&MsgID={1}&skey={2}&type=slave", _webwxgetmsgimg,MsgID,LoginService.SKey);
+                    string url = string.Format("{0}&MsgID={1}&skey={2}&type=slave", _webwxgetmsgimg, MsgID, LoginService.SKey);
                     byte[] bytesvideo = HttpServer.SendPostRequest(url, string.Empty);
                 }
             }
@@ -158,7 +162,7 @@ namespace wxRobot.Services
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
             sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
-            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", "image/jpeg","pic", file);
+            byte[] bytes = HttpServer.SendPostRequest(_uplpadFileUrl, sb.ToString(), "image/jpeg", "image/jpeg", "pic", file);
             string send_result = string.Empty;
             if (bytes != null)
             {
@@ -167,7 +171,7 @@ namespace wxRobot.Services
             return send_result;
         }
 
-        public string UploadVideo(string path)
+        public string UploadFile(string path)
         {
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
@@ -175,13 +179,93 @@ namespace wxRobot.Services
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
             sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
-            byte[] bytes = HttpServer.SendPostRequestByVideo(_uplpadFileUrl, sb.ToString(), file);
+            UpoladType uploadType = GetUpooadType(file);
+            uploadType.uploadmediarequest = sb.ToString();
+            uploadType.Url = _uplpadFileUrl;
+            byte[] bytes = HttpServer.SendPostRequestByFile(uploadType);
             string send_result = string.Empty;
             if (bytes != null)
             {
                 send_result = Encoding.UTF8.GetString(bytes);
             }
             return send_result;
+        }
+
+        public void SendFile(string MediaId,string totallen,string title,string fileext, string from, string to)
+        {
+            string msg_json = "{{" +
+          "\"BaseRequest\":{{" +
+              "\"DeviceID\" : \"e{0}\"," +
+              "\"Sid\" : \"{1}\"," +
+              "\"Skey\" : \"{2}\"," +
+              "\"Uin\" : \"{3}\"" +
+          "}}," +
+          "\"Msg\" : {{" +
+              "\"ClientMsgId\" : {4}," +
+              "\"Content\" : \"{5}\"," +
+              "\"FromUserName\" : \"{6}\"," +
+              "\"LocalID\" : {7}," +
+              "\"ToUserName\" : \"{8}\"," +
+              "\"Type\" : 6" +
+          "}}," +
+          "\"rr\" : {9}" +
+          "}}";
+            string content = "<appmsg appid='wxeb7ec651dd0aefa9' sdkver=''>< title > " + title + " </ title >< des ></ des >< action ></ action >< type > 6 </ type >< content ></ content >< url ></ url >< lowurl ></ lowurl >< appattach >< totallen > "+ totallen + " </ totallen >< attachid > "+MediaId+" </ attachid >< fileext > "+ fileext + " </ fileext ></ appattach >< extinfo ></ extinfo ></ appmsg > ";
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            if (sid != null && uin != null)
+            {
+                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), content, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan());
+                byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg+ "&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
+                string send_result = Encoding.UTF8.GetString(bytes);
+            }
+        }
+
+        private UpoladType GetUpooadType(FileInfo fi)
+        {
+            UpoladType upoladType = new UpoladType();
+            upoladType.FileInfo = fi;
+            string fileExtension = fi.Extension;
+            switch (fileExtension.ToLower())
+            {
+                case ".jpg":
+                case ".jpge":
+                    upoladType.type = "image/jpg";
+                    upoladType.ContentType = "image/jpg";
+                    upoladType.mediatype = "pic";
+                    break;
+                case "gif":
+                    upoladType.type = "image/gif";
+                    upoladType.ContentType = "image/gif";
+                    upoladType.mediatype = "doc";
+                    break;
+                //case ".mp4":
+                //    upoladType.type = "video/mp4";
+                //    upoladType.ContentType = "video/mp4";
+                //    upoladType.mediatype = "video";
+                //    break;
+                case ".doc":
+                case ".docx":
+                case ".ppt":
+                case ".pptx":
+                case ".xls":
+                case ".xlsx":
+                    upoladType.type = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+                    upoladType.ContentType = "image/gif";
+                    upoladType.mediatype = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+                    break;
+                case ".txt":
+                    upoladType.type = "text/plain";
+                    upoladType.ContentType = "text/plain";
+                    upoladType.mediatype = "doc";
+                    break;
+                default:
+                    upoladType.type = "application/octet-stream";
+                    upoladType.ContentType = "application/octet-stream";
+                    upoladType.mediatype = "doc";
+                    break;
+            }
+            return upoladType;
         }
 
 

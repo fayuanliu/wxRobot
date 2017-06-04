@@ -106,6 +106,7 @@
     <Compile Include="Https\HttpServer.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Dto\MessageType.cs" />
+    <Compile Include="Model\Dto\UpoladType.cs" />
     <Compile Include="Model\Dto\WXMesssage.cs" />
     <Compile Include="Model\Initializer\DbInitalizerIfNotExists.cs" />
     <Compile Include="Model\Initializer\DbInitializer.cs" />

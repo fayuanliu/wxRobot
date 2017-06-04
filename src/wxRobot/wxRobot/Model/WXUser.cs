@@ -136,6 +136,12 @@ namespace wxRobot.Model
             wxs.SendVideo(msg.MediaId, msg.From, msg.To);
         }
 
+        public void SendFile(WXMesssage msg)
+        {
+            WXServices wxs = new WXServices();
+            wxs.SendFile(msg.MediaId,"1024","文件","文件", msg.From, msg.To);
+        }
+
         public void SendImage(WXMesssage msg)
         {
             WXServices wxs = new WXServices();

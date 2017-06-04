@@ -309,7 +309,7 @@ namespace wxRobot
                     return;
                 }
                 WXServices wxServices = new WXServices();
-                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent);
+                var resultJson = wxServices.UploadFile(sendVideo.TxtContent);
                 if (!string.IsNullOrEmpty(resultJson))
                 {
                     JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;
@@ -323,7 +323,7 @@ namespace wxRobot
                             msg.To = item.UserName;
                             msg.Time = DateTime.Now;
                             msg.MediaId = mediaId;
-                            _me.SendVideo(msg);
+                            _me.SendFile(msg);
                             outPost(item.NickName, sendVideo.SendType);
                         }
                     }

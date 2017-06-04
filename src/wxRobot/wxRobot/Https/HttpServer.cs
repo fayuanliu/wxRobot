@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using wxRobot.Model.Dto;
 
 namespace wxRobot.Https
 {
@@ -98,7 +99,7 @@ namespace wxRobot.Https
             postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
             postbody += "Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n";
 
-            postbody += DateTime.Now.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
+            postbody += fi.LastWriteTime.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
             postbody += "------WebKitFormBoundaryq0powRpu8bd9gwTG\r\n";
             postbody += "Content-Disposition: form-data; name=\"size\"\r\n\r\n";
             postbody += filesize + "\r\n";
@@ -154,14 +155,14 @@ namespace wxRobot.Https
 
         }
 
-        public static byte[] SendPostRequestByVideo(string url, string body, FileInfo fi)
+        public static byte[] SendPostRequestByFile(UpoladType upload)
         {
             Cookie webwx_data_ticket = HttpServer.GetCookie("webwx_data_ticket");
-            string filename = fi.Name;
-            long filesize = fi.Length;
-            var request = WebRequest.Create(url) as HttpWebRequest;
+            string filename = upload.FileInfo.Name;
+            long filesize = upload.FileInfo.Length;
+            var request = WebRequest.Create(upload.Url) as HttpWebRequest;
             request.Accept = "*/*";
-            if (url.Contains("wx2"))
+            if (upload.Url.Contains("wx2"))
             {
                 request.Host = "file.wx2.qq.com";
                 request.Headers.Add("request", "https://wx2.qq.com");
@@ -188,20 +189,20 @@ namespace wxRobot.Https
             postbody += filename + "\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"type\"\r\n\r\n";
-            postbody += "video/mp4\r\n";
+            postbody += ""+ upload .type+ "\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n";
 
-            postbody += DateTime.Now.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
+            postbody += upload.FileInfo.LastWriteTime.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"size\"\r\n\r\n";
             postbody += filesize + "\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
-            postbody += "video\r\n";
+            postbody += ""+ upload .mediatype+ "\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
-            postbody += body + "\r\n";
+            postbody += upload.uploadmediarequest + "\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"webwx_data_ticket\"\r\n\r\n";
             postbody += webwx_data_ticket.Value + "\r\n";
@@ -210,9 +211,9 @@ namespace wxRobot.Https
             postbody += "undefined\r\n";
             postbody += "------WebKitFormBoundaryLcLGZdwXomd67JVF\r\n";
             postbody += "Content-Disposition: form-data; name=\"filename\"; filename=\"" + filename + "\"\r\n";
-            postbody += "Content-Type: video/mp4\r\n\r\n";
+            postbody += "Content-Type: "+ upload .ContentType+ "\r\n\r\n";
 
-            FileStream fs = fi.OpenRead();
+            FileStream fs = upload.FileInfo.OpenRead();
             try
             {
                 var sw = new StreamWriter(request.GetRequestStream());
@@ -251,66 +252,6 @@ namespace wxRobot.Https
                 fs.Close();
             }
 
-        }
-
-        public static byte[] SendPostRequestV2(string url, string body)
-        {
-            try
-            {
-                byte[] request_body = Encoding.UTF8.GetBytes(body);
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Accept = "application/json,text/plain,*/*";
-                if (url.Contains("wx2"))
-                {
-                    request.Host = "wx2.qq.com";
-                    request.Referer = "https://wx2.qq.com/";
-                    request.Headers.Add("Origin", "https://wx2.qq.com");
-                }
-                else
-                {
-                    request.Host = "wx.qq.com";
-                    request.Headers.Add("Origin", "https://wx.qq.com");
-                    request.Referer = "https://wx.qq.com/";
-                }
-                request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
-                request.Headers.Add("Accept-Encoding", "gzip,deflate");
-                request.ContentLength = request_body.Length;
-                if (CookiesContainer == null)
-                {
-                    CookiesContainer = new CookieContainer();
-                }
-                //CookiesContainer.Add(SetCookie("webwxuvid", "9f8649ff49ca74603be0817d919f5604aec1e08d7cfa82e07c6869b9e9bc73dfa0cb430e88aae522a3495026f69ee603", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("login_frequency", "1", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("last_wxuin", "2091353982", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("pgv_si", "s8194194432", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("MM_WX_NOTIFY_STATE", "1", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("MM_WX_SOUND_STATE", "1", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("wxloadtime", "1496286043_expired", ".wx.qq.com"));
-                //CookiesContainer.Add(SetCookie("wxpluginkey", "1496278802", ".wx.qq.com"));
-                request.CookieContainer = CookiesContainer;  //启用cookie
-                request.Method = "post";
-                Stream request_stream = request.GetRequestStream();
-                request_stream.Write(request_body, 0, request_body.Length);
-                request_stream.Close();
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream response_stream = response.GetResponseStream();
-                int count = (int)response.ContentLength;
-                int offset = 0;
-                byte[] buf = new byte[count];
-                while (count > 0)  //读取返回数据
-                {
-                    int n = response_stream.Read(buf, offset, count);
-                    if (n == 0) break;
-                    count -= n;
-                    offset += n;
-                }
-                response_stream.Close();
-                return buf;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
         }
 
         /// <summary>
