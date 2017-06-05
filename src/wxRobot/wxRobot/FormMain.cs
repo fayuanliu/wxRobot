@@ -309,7 +309,7 @@ namespace wxRobot
                     return;
                 }
                 WXServices wxServices = new WXServices();
-                var resultJson = wxServices.UploadFile(sendVideo.TxtContent);
+                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent);
                 if (!string.IsNullOrEmpty(resultJson))
                 {
                     JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;

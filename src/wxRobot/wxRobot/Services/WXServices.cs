@@ -191,6 +191,31 @@ namespace wxRobot.Services
             return send_result;
         }
 
+        public string UploadVideo(string path)
+        {
+            Cookie sid = HttpServer.GetCookie("wxsid");
+            Cookie uin = HttpServer.GetCookie("wxuin");
+            FileInfo file = new FileInfo(path);
+            string send_result = string.Empty;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
+            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
+            FileStream fs = file.OpenRead();
+            byte[] buffer = new byte[1024 * 512];
+            int bytesRead = 0;
+            var d = fs.Length / (512 * 1024.0);
+            //分块上传
+            double chunks = Math.Ceiling(Convert.ToDouble(d));
+            int chunk = 0;
+            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                byte[] bytes = HttpServer.SendPostRequestByVideo2(_uplpadFileUrl, sb.ToString(), file, buffer, chunks, chunk);
+                chunk++;
+            }
+            fs.Close();
+            return send_result;
+        }
+
         public void SendFile(string MediaId,string totallen,string title,string fileext, string from, string to)
         {
             string msg_json = "{{" +
@@ -239,11 +264,11 @@ namespace wxRobot.Services
                     upoladType.ContentType = "image/gif";
                     upoladType.mediatype = "doc";
                     break;
-                //case ".mp4":
-                //    upoladType.type = "video/mp4";
-                //    upoladType.ContentType = "video/mp4";
-                //    upoladType.mediatype = "video";
-                //    break;
+                case ".mp4":
+                    upoladType.type = "video/mp4";
+                    upoladType.ContentType = "video/mp4";
+                    upoladType.mediatype = "video";
+                    break;
                 case ".doc":
                 case ".docx":
                 case ".ppt":
