@@ -239,11 +239,11 @@ namespace wxRobot.Services
                     upoladType.ContentType = "image/gif";
                     upoladType.mediatype = "doc";
                     break;
-                //case ".mp4":
-                //    upoladType.type = "video/mp4";
-                //    upoladType.ContentType = "video/mp4";
-                //    upoladType.mediatype = "video";
-                //    break;
+                case ".mp4":
+                    upoladType.type = "video/mp4";
+                    upoladType.ContentType = "video/mp4";
+                    upoladType.mediatype = "video";
+                    break;
                 case ".doc":
                 case ".docx":
                 case ".ppt":
