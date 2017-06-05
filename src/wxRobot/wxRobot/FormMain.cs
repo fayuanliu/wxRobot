@@ -316,6 +316,11 @@ namespace wxRobot
                     string mediaId = obj["MediaId"].ToString();
                     if (!string.IsNullOrEmpty(mediaId))
                     {
+                        long totallen; string title, fileext;
+                        FileInfo fi = new FileInfo(sendVideo.TxtContent);
+                        totallen = fi.Length;
+                        title = fi.Name;
+                        fileext = fi.Extension;
                         foreach (var item in contact_all)
                         {
                             msg.From = _me.UserName;
@@ -323,7 +328,7 @@ namespace wxRobot
                             msg.To = item.UserName;
                             msg.Time = DateTime.Now;
                             msg.MediaId = mediaId;
-                            _me.SendFile(msg);
+                            _me.SendFile(msg, totallen, title, fileext);
                             outPost(item.NickName, sendVideo.SendType);
                         }
                     }

@@ -165,72 +165,72 @@ namespace wxRobot.Https
             if (url.Contains("wx2"))
             {
                 request.Host = "file.wx2.qq.com";
-                request.Headers.Add("request", "https://wx2.qq.com");
                 request.Referer = "https://wx2.qq.com/";
+                request.Headers.Add("Origin", "https://wx2.qq.com");
             }
             else
             {
                 request.Host = "file.wx.qq.com";
-                request.Headers.Add("request", "https://wx.qq.com");
                 request.Referer = "https://wx.qq.com/";
+                request.Headers.Add("Origin", "https://wx.qq.com");
             }
+            request.UserAgent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)";
+            request.KeepAlive = true;
+            var boundary = Guid.NewGuid().ToString("N");
             request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
-            request.Headers.Add("Accept-Encoding", "gzip,deflate");
-            request.ContentType = "multipart/form-data; boundary=----WebKitFormBoundaryBYwQxyZI1AKKWAow";
-
+            request.Headers.Add("Accept-Encoding", "gzip, deflate, br");
+            request.ContentType = "multipart/form-data; boundary=----"+ boundary + "";
             request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
             request.Method = "POST";
             request.ServicePoint.Expect100Continue = false;
-            string postbody = "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            string postbody = "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"id\"\r\n\r\n";
             postbody += "WU_FILE_2\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"name\"\r\n\r\n";
             postbody += filename + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"type\"\r\n\r\n";
             postbody += "video/mp4\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"lastModifiedDate\"\r\n\r\n";
 
             postbody += fi.LastWriteTime.ToString("ddd MMM dd yyyy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US")) + " GMT+0800 (中国标准时间)" + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"size\"\r\n\r\n";
             postbody += filesize + "\r\n";
 
             if (chunks > 1)
             {
-                postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+                postbody += "------"+ boundary + "\r\n";
                 postbody += "Content-Disposition: form-data; name=\"chunks\"\r\n\r\n";
                 postbody += chunks + "\r\n";
-                postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+                postbody += "------"+ boundary + "\r\n";
                 postbody += "Content-Disposition: form-data; name=\"chunk\"\r\n\r\n";
                 postbody += chunk + "\r\n";
             }
-
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
-            postbody += "video\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "doc\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
             postbody += body + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"webwx_data_ticket\"\r\n\r\n";
             postbody += webwx_data_ticket.Value + "\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"pass_ticket\"\r\n\r\n";
             postbody += "undefined\r\n";
-            postbody += "------WebKitFormBoundaryBYwQxyZI1AKKWAow\r\n";
+            postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"filename\"; filename=\"" + filename + "\"\r\n";
             postbody += "Content-Type: application/octet-stream\r\n\r\n";
-
             try
             {
                 var sw = new StreamWriter(request.GetRequestStream());
                 sw.Write(postbody);
                 sw.Flush();
                 sw.BaseStream.Write(buffer, 0, buffer.Length);
-                sw.Write("\r\n------WebKitFormBoundaryBYwQxyZI1AKKWAow--\r\n");
+                sw.Write("\r\n------"+ boundary + "--\r\n");
                 sw.Flush();
                 sw.Close();
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -268,19 +268,18 @@ namespace wxRobot.Https
                 request.Host = "file.wx2.qq.com";
                 request.Headers.Add("request", "https://wx2.qq.com");
                 request.Referer = "https://wx2.qq.com/";
-                request.Headers.Add("Origin:", "https://wx2.qq.com");
+                request.Headers.Add("Origin", "https://wx2.qq.com");
             }
             else
             {
                 request.Host = "file.wx.qq.com";
                 request.Headers.Add("request", "https://wx.qq.com");
                 request.Referer = "https://wx.qq.com/";
-                request.Headers.Add("Origin:", "https://wx2.qq.com");
+                request.Headers.Add("Origin:", "https://wx.qq.com");
             }
             request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4");
             request.Headers.Add("Accept-Encoding", "gzip,deflate");
             request.ContentType = "multipart/form-data; boundary=----WebKitFormBoundaryLcLGZdwXomd67JVF";
-
             request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
             request.Method = "POST";
             request.ServicePoint.Expect100Continue = false;
@@ -355,6 +354,68 @@ namespace wxRobot.Https
                 fs.Close();
             }
 
+        }
+
+        /// <summary>
+        /// 设置代理
+        /// </summary>
+        /// <param name="item">参数对象</param>
+        private static void SetProxy(HttpItem item,HttpWebRequest request)
+        {
+            bool isIeProxy = false;
+            if (!string.IsNullOrWhiteSpace(item.ProxyIp))
+            {
+                isIeProxy = item.ProxyIp.ToLower().Contains("ieproxy");
+            }
+            if (!string.IsNullOrWhiteSpace(item.ProxyIp) && !isIeProxy)
+            {
+                //设置代理服务器
+                if (item.ProxyIp.Contains(":"))
+                {
+                    string[] plist = item.ProxyIp.Split(':');
+                    WebProxy myProxy = new WebProxy(plist[0].Trim(), Convert.ToInt32(plist[1].Trim()));
+                    //建议连接
+                    myProxy.Credentials = new NetworkCredential(item.ProxyUserName, item.ProxyPwd);
+                    //给当前请求对象
+                    request.Proxy = myProxy;
+                }
+                else
+                {
+                    WebProxy myProxy = new WebProxy(item.ProxyIp, false);
+                    //建议连接
+                    myProxy.Credentials = new NetworkCredential(item.ProxyUserName, item.ProxyPwd);
+                    //给当前请求对象
+                    request.Proxy = myProxy;
+                }
+            }
+            else if (isIeProxy)
+            {
+                //设置为IE代理
+            }
+            else
+            {
+                request.Proxy = item.WebProxy;
+            }
+        }
+
+        public class HttpItem
+        {
+            /// <summary>
+            /// 代理Proxy 服务器用户名
+            /// </summary>
+            public string ProxyUserName { get; set; }
+            /// <summary>
+            /// 代理 服务器密码
+            /// </summary>
+            public string ProxyPwd { get; set; }
+            /// <summary>
+            /// 代理 服务IP,如果要使用IE代理就设置为ieproxy
+            /// </summary>
+            public string ProxyIp { get; set; }
+            /// <summary>
+            /// 设置代理对象，不想使用IE默认配置就设置为Null，而且不要设置ProxyIp
+            /// </summary>
+            public WebProxy WebProxy { get; set; }
         }
 
         /// <summary>

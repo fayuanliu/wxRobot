@@ -210,13 +210,17 @@ namespace wxRobot.Services
             while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
             {
                 byte[] bytes = HttpServer.SendPostRequestByVideo2(_uplpadFileUrl, sb.ToString(), file, buffer, chunks, chunk);
+                if (bytes != null)
+                {
+                    send_result = Encoding.UTF8.GetString(bytes);
+                }
                 chunk++;
             }
             fs.Close();
             return send_result;
         }
 
-        public void SendFile(string MediaId,string totallen,string title,string fileext, string from, string to)
+        public void SendFile(string MediaId, long totallen,string title,string fileext, string from, string to)
         {
             string msg_json = "{{" +
           "\"BaseRequest\":{{" +
@@ -233,15 +237,15 @@ namespace wxRobot.Services
               "\"ToUserName\" : \"{8}\"," +
               "\"Type\" : 6" +
           "}}," +
-          "\"rr\" : {9}" +
+          "\"Scene\" : 0" +
           "}}";
-            string content = "<appmsg appid='wxeb7ec651dd0aefa9' sdkver=''>< title > " + title + " </ title >< des ></ des >< action ></ action >< type > 6 </ type >< content ></ content >< url ></ url >< lowurl ></ lowurl >< appattach >< totallen > "+ totallen + " </ totallen >< attachid > "+MediaId+" </ attachid >< fileext > "+ fileext + " </ fileext ></ appattach >< extinfo ></ extinfo ></ appmsg > ";
+            string content = "<appmsg appid='wxeb7ec651dd0aefa9' sdkver=''><title>"+title+"</title><des></des><action></action><type>6</type><content></content><url></url><lowurl></lowurl><appattach><totallen>"+totallen+"</totallen><attachid>"+MediaId+"</attachid><fileext>"+fileext+"</fileext></appattach><extinfo></extinfo></appmsg>";
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
             {
-                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), content, from, Utils.GetTimeSpan(), to, Utils.GetTimeSpan());
-                byte[] bytes = HttpServer.SendPostRequest(_sendvideomsg+ "&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
+                msg_json = string.Format(msg_json, Utils.GetTimeSpan(), sid.Value, LoginService.SKey, uin.Value, Utils.GetTimeSpan(), content, from, Utils.GetTimeSpan(), to);
+                byte[] bytes = HttpServer.SendPostRequest(_webwxsendappmsg + "&pass_ticket=" + LoginService.Pass_Ticket, msg_json);
                 string send_result = Encoding.UTF8.GetString(bytes);
             }
         }
