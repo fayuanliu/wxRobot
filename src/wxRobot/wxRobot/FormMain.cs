@@ -309,7 +309,7 @@ namespace wxRobot
                     return;
                 }
                 WXServices wxServices = new WXServices();
-                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent);
+                var resultJson = wxServices.UploadVideo(sendVideo.TxtContent, _me.UserName, contact_all[0].UserName);
                 if (!string.IsNullOrEmpty(resultJson))
                 {
                     JObject obj = JsonConvert.DeserializeObject(resultJson) as JObject;
@@ -383,7 +383,7 @@ namespace wxRobot
             }
         }
 
-        private void outPost(string toUSerName,string msgType)
+        private void outPost(string toUSerName, string msgType)
         {
             var txt = txtLog.Text;
             txtLog.Text = string.Format("{0}\t已发{1}信息给{2}\r\n{3}", DateTime.Now.ToString(), toUSerName, msgType, txt);
