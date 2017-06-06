@@ -211,7 +211,7 @@ namespace wxRobot.Https
             }
             postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"mediatype\"\r\n\r\n";
-            postbody += "doc\r\n";
+            postbody += "video\r\n";
             postbody += "------"+ boundary + "\r\n";
             postbody += "Content-Disposition: form-data; name=\"uploadmediarequest\"\r\n\r\n";
             postbody += body + "\r\n";
