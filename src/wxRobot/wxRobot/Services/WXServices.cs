@@ -44,7 +44,7 @@ namespace wxRobot.Services
         // private string _webwxgetmsgimg = "https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetmsgimg?&MsgID=7328271055096700186&skey=%40crypt_9b7cdeb2_e9026299b97c735745e082c98f1340e5&type=slave";
         private string _webwxgetmsgimg = HttpApi.Api["_webwxgetmsgimg"].ToString();
         //发送文件
-       // private string _webwxsendappmsg = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN";
+        // private string _webwxsendappmsg = "https://wx2.qq.com/cgi-bin/mmwebwx-bin/webwxsendappmsg?fun=async&f=json&lang=zh_CN";
         private string _webwxsendappmsg = HttpApi.Api["_webwxsendappmsg"].ToString();
         /// <summary>
         /// 微信初始化
@@ -191,7 +191,7 @@ namespace wxRobot.Services
             return send_result;
         }
 
-        public string UploadVideo(string path)
+        public string UploadVideo(string path, string From, string To)
         {
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
@@ -199,7 +199,7 @@ namespace wxRobot.Services
             string send_result = string.Empty;
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{{\"UploadType\":2,\"BaseRequest\":{{\"Uin\":{0},\"Sid\":\"{1}\",\"Skey\":\"{2}\",\"DeviceID\":\"e{3}\"}},", uin.Value, sid.Value, LoginService.SKey, Utils.GetTimeSpan());
-            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan());
+            sb.AppendFormat("\"ClientMediaId\":{3},\"TotalLen\":{0},\"StartPos\":0,\"DataLen\":{1},\"MediaType\":4,\"FromUserName\":\"{4}\",\"ToUserName\":\"{5}\",\"FileMd5\":\"{2}\"}}", file.Length, file.Length, GetFileMD5Hash.GetMD5Hash(path), Utils.GetTimeSpan(), From, To);
             FileStream fs = file.OpenRead();
             byte[] buffer = new byte[1024 * 512];
             int bytesRead = 0;
@@ -207,9 +207,14 @@ namespace wxRobot.Services
             //分块上传
             double chunks = Math.Ceiling(Convert.ToDouble(d));
             int chunk = 0;
+            int length = 512 * 1024;
             while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) != 0)
             {
-                byte[] bytes = HttpServer.SendPostRequestByVideo2(_uplpadFileUrl, sb.ToString(), file, buffer, chunks, chunk);
+                if (chunk == chunks - 1)
+                {
+                    length = (int)(fs.Length - (chunks - 1) * length);
+                }
+                byte[] bytes = HttpServer.SendPostRequestByVideo2(_uplpadFileUrl, sb.ToString(), file, buffer, chunks, chunk, length);
                 if (bytes != null)
                 {
                     send_result = Encoding.UTF8.GetString(bytes);
@@ -220,7 +225,7 @@ namespace wxRobot.Services
             return send_result;
         }
 
-        public void SendFile(string MediaId, long totallen,string title,string fileext, string from, string to)
+        public void SendFile(string MediaId, long totallen, string title, string fileext, string from, string to)
         {
             string msg_json = "{{" +
           "\"BaseRequest\":{{" +
@@ -239,7 +244,7 @@ namespace wxRobot.Services
           "}}," +
           "\"Scene\" : 0" +
           "}}";
-            string content = "<appmsg appid='wxeb7ec651dd0aefa9' sdkver=''><title>"+title+"</title><des></des><action></action><type>6</type><content></content><url></url><lowurl></lowurl><appattach><totallen>"+totallen+"</totallen><attachid>"+MediaId+"</attachid><fileext>"+fileext+"</fileext></appattach><extinfo></extinfo></appmsg>";
+            string content = "<appmsg appid='wxeb7ec651dd0aefa9' sdkver=''><title>" + title + "</title><des></des><action></action><type>6</type><content></content><url></url><lowurl></lowurl><appattach><totallen>" + totallen + "</totallen><attachid>" + MediaId + "</attachid><fileext>" + fileext + "</fileext></appattach><extinfo></extinfo></appmsg>";
             Cookie sid = HttpServer.GetCookie("wxsid");
             Cookie uin = HttpServer.GetCookie("wxuin");
             if (sid != null && uin != null)
